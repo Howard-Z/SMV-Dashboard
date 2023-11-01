@@ -7,3 +7,5 @@ class MessageHistory(models.Model):
     topic = models.CharField(max_length=128)
     message = models.TextField()
     date = models.DateTimeField()
+    def __str__(self):
+        return self.topic
