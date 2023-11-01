@@ -5,3 +5,6 @@ INSTALLATION:
 - python manage.py runserver
 TO USE:
 - set topics in list format, views.py line 8
+
+
+Things to Consider: the sqlite file is the entire db, should we really be commiting this to gh?
