@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "django.contrib.gis",
     'mqtt'
 ]
 
@@ -92,13 +91,7 @@ DATABASES = {
         'HOST': 'ep-withered-disk-57211304.us-west-2.aws.neon.tech',
         'PORT': '5432',
         'OPTIONS': {'sslmode': 'require'},
-  },
-    "dev": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": "geodjango",
-        "USER": "geo",
-    },
-
+  }
 }
 
 DATABASES['default'] = DATABASES['dev' if DEBUG else 'prod']
