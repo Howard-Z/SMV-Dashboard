@@ -5,3 +5,5 @@ INSTALLATION:
 - python manage.py runserver
 TO USE:
 - set topics in list format, views.py line 8
+
+/smv/
