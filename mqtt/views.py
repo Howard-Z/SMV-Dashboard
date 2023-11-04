@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse
-from .helper import run, getSpeed
+from .helper import run, getSpeed, getBattery
 import threading
 
 # Create your views here.
@@ -14,8 +14,14 @@ def index(request):
     return render(request, 'mqtt/dashboard.html')
 
 def ajax_speed(request):
-    SPEED = getSpeed()
-    return JsonResponse({"speed": SPEED})
+    battery = getBattery()
+    if battery < 10:
+        status = "alert"
+    elif battery < 20:
+        status = "warn"
+    else:
+        status = "good"
+    return JsonResponse({"speed": getSpeed(), "battery": {"level": getBattery(), "status": status}})
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", args=[topics])
 thread.start()
