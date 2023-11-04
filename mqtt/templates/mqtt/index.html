@@ -1,8 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-    <head><title>SMV Vehicle</title></head>
+    <head><title>{% block title %}SMV Vehicle{% endblock %}</title>{% block js %}{% endblock %}</head>
     <body>
+        {% block body %}
         <h1>SMV Dashboard</h1>
         <a href="/admin">Admin Site(Login Required)</a>
+        {% endblock %}
     </body>
 </html>

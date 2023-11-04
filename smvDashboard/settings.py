@@ -75,14 +75,26 @@ WSGI_APPLICATION = 'smvDashboard.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
-    'default': {
+
+}
+DATABASES = {
+    'prod': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    'dev': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'smv-dashboard',
+        'USER': 'matthewt-123',
+        'PASSWORD': 'MAZD1Hc3JlIo',
+        'HOST': 'ep-withered-disk-57211304.us-west-2.aws.neon.tech',
+        'PORT': '5432',
+        'OPTIONS': {'sslmode': 'require'},
+  }
 }
 
+DATABASES['default'] = DATABASES['dev' if DEBUG else 'prod']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+db.sqlite3
+=======
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -158,3 +161,4 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+>>>>>>> 086d157ddc8ce2b450aa377e108e78149d4a4491

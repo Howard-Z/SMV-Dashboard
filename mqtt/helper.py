@@ -3,6 +3,9 @@ from paho.mqtt import client as mqtt_client
 from .models import MessageHistory
 from datetime import datetime
 
+global SPEED
+SPEED = 20
+
 broker = 'apt.howard-zhu.com'
 port = 1883
 # Generate a Client ID with the subscribe prefix.
@@ -20,8 +23,14 @@ def connect_mqtt() -> mqtt_client:
     #client.on_connect = on_connect
     client.connect(broker, port)
     return client
-
+def getSpeed():
+    global SPEED
+    return SPEED
 def store(msg):
+    print(datetime.now())
+    if msg.topic == 'speed':
+        global SPEED
+        SPEED = int(msg.payload.decode())
     #TODO: IMPLEMENT STORING FEATURE
     MessageHistory.objects.create(topic=msg.topic, message = msg.payload.decode(), date=datetime.now())
     print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
