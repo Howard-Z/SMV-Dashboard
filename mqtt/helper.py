@@ -3,8 +3,15 @@ from paho.mqtt import client as mqtt_client
 from .models import MessageHistory
 from datetime import datetime
 
+#topic initialization(tmp)
+speed_topic = "speed"
+battery_topic = "battery"
+
 global SPEED
-SPEED = 20
+SPEED = 0 #init speed to 0
+
+global BATTERY
+BATTERY = 0 #init battery to 0
 
 broker = 'apt.howard-zhu.com'
 port = 1883
@@ -23,14 +30,27 @@ def connect_mqtt() -> mqtt_client:
     #client.on_connect = on_connect
     client.connect(broker, port)
     return client
+
+#returns global SPEED var for use in dashboard ajax call. avoids writing and pulling from db
+
+#potential idea: create DAQ class with accessors and pass class to front?
+#   pros: one var passed, simplifying processes and member functions
+#   cons: all data needs to be available to update at once(ie: speed cannot be individually updated)
+#   question: how often should different data types be refreshed? ie: speed -> instant, battery -> 1s/5s? reduce system load
 def getSpeed():
     global SPEED
     return SPEED
+def getBattery():
+    global BATTERY
+    return BATTERY
 def store(msg):
     print(datetime.now())
-    if msg.topic == 'speed':
+    if msg.topic == speed_topic:
         global SPEED
         SPEED = int(msg.payload.decode())
+    elif msg.topic == battery_topic:
+        global BATTERY
+        BATTERY = int(msg.payload.decode())
     #TODO: IMPLEMENT STORING FEATURE
     MessageHistory.objects.create(topic=msg.topic, message = msg.payload.decode(), date=datetime.now())
     print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
