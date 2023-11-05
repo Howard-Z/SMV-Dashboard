@@ -22,6 +22,9 @@ def ajax_speed(request):
     else:
         status = "good"
     return JsonResponse({"speed": getSpeed(), "battery": {"level": getBattery(), "status": status}})
+
+def map(request):
+    return render(request, 'mqtt/map.html')
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", args=[topics])
 thread.start()

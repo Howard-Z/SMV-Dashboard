@@ -1,10 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-    <head><title>{% block title %}SMV Vehicle{% endblock %}</title>{% block js %}{% endblock %}</head>
+    <head>
+        <title>{% block title %}SMV Vehicle{% endblock %}</title>
+        {% block css %}{% endblock %}
+        <link rel='icon' type="image/png" href="{% static 'mqtt/favicon.ico' %}">
+    </head>
     <body>
         {% block body %}
         <h1>SMV Dashboard</h1>
         <a href="/admin">Admin Site(Login Required)</a>
         {% endblock %}
     </body>
+    <footer>
+        {% block js %}
+        {% endblock %}
+    </footer>
 </html>

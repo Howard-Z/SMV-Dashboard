@@ -1,0 +1,46 @@
+{% extends 'mqtt/index.html' %}
+{% load static %}
+{% block title %}
+SMV Map
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    #map { height: 1000px; }
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="map"></div>
+{% endblock %}
+
+{% block js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        var map = L.map('map', {
+     center: [34.0699, -118.4438], //set to UCLA
+     zoom: 15
+   });
+    //do not modify tile layer
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    //marker test: diddy riese
+    var marker = L.marker([34.0631, -118.4469]).addTo(map);
+    // create a red polyline from an array of LatLng points. ref https://leafletjs.com/reference.html#polyline
+    var latlngs = [
+        [34.0631, -118.4469],
+        [34.063559, -118.445448],
+        [34.065892, -118.445173]
+    ];
+
+    var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+
+    // zoom the map to the polyline
+    map.fitBounds(polyline.getBounds());
+
+    })
+</script>
+{% endblock %}
