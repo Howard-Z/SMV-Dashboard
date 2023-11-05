@@ -72,9 +72,25 @@ function refresh() {
         screenUpdate()
     })
 }
+function battery() {
+    fetch('/ajax_battery')
+    .then(response => response.json())
+    .then(result => {
+        battery_level = result['level']
+        indicator = document.getElementById("battery_indicator")
+        indicator.style = `height:${battery_level}%`
+        if (level < 10) {
+          indicator.setAttribute('class', "battery-level alert")
+        } else if (level < 20) {
+          indicator.setAttribute('class', "battery-level warn")
+        } 
+    })
+}
 //increase second parameter for increased responsiveness at the cost of server load(1=fast, but 1000 ajax calls per second)
 //10 => 0.76s responsiveness, 1 => 0.38s, 1000 => ~2s 
 setInterval(refresh, 10)
+setInterval(battery, 3000)
+
 }) //end DOMContentLoaded 
 </script>
 {% endblock %}
@@ -134,29 +150,8 @@ setInterval(refresh, 10)
         <input type="range" min="0" max="270" value="1" class="slider" id="kmhslider">
         <p>km/h: <span id="valueshow"></span></p>
     </div>
-
-    <div class="battery">
-        <div class="battery-level" style="height:100%;"></div>
-      </div>
-      
       <div class="battery">
-        <div class="battery-level" style="height:75%;"></div>
-      </div>
-      
-      <div class="battery">
-        <div class="battery-level" style="height:50%;"></div>
-      </div>
-      
-      <div class="battery">
-        <div class="battery-level" style="height:25%;"></div>
-      </div>
-      
-      <div class="battery">
-        <div class="battery-level warn" style="height:18%;"></div>
-      </div>
-      
-      <div class="battery">
-        <div class="battery-level alert" style="height:10%;"></div>
+        <div id = "battery_indicator" class="battery-level" style="height:100%;"></div>
       </div>
 
 
