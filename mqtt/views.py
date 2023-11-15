@@ -54,4 +54,3 @@ def map(request):
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", args=[topics], daemon=True)
 thread.start()
-print(True)
