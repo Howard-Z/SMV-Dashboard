@@ -27,13 +27,6 @@ def index(request):
     return render(request, 'mqtt/dashboard.html')
 
 def ajax_speed(request):
-    battery = getBattery()
-    if battery < 10:
-        status = "alert"
-    elif battery < 20:
-        status = "warn"
-    else:
-        status = "good"
     return JsonResponse({"speed": getSpeed()})
 def ajax_battery(request):
     battery = getBattery()
