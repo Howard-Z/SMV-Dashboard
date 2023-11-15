@@ -30,17 +30,28 @@ SMV Map
     //marker test: diddy riese
     var marker = L.marker([34.0631, -118.4469]).addTo(map);
     // create a red polyline from an array of LatLng points. ref https://leafletjs.com/reference.html#polyline
-    var latlngs = [
-        [34.0631, -118.4469],
-        [34.063559, -118.445448],
-        [34.065892, -118.445173]
-    ];
+        // async refresh speed every 0.5 second
+    var latlngs = [];
+    fetch('/ajax_location')
+    .then(response => response.json())
+    .then(result => {
+            latlngs = [result['lat'], result['long']];
+    })
 
     var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
 
     // zoom the map to the polyline
     map.fitBounds(polyline.getBounds());
 
+    function refresh() {
+        fetch('/ajax_location')
+        .then(response => response.json())
+        .then(result => {
+            polyline.addLatLng(L.latLng(result['lat'], result['long']));
+    })}
+    setInterval(refresh, 3000)
     })
+
+
 </script>
 {% endblock %}

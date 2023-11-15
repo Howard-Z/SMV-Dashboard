@@ -5,10 +5,10 @@ from datetime import datetime
 import time
 
 #topic initialization(tmp)
-speed_topic = "speed"
-battery_topic = "battery"
-long_topic = "longitude"
-lat_topic = "latitude"
+speed_topic = "/DAQ/Speed"
+battery_topic = "/DAQ/Energy" #check later
+long_topic = "/DAQ/Longitude"
+lat_topic = "/DAQ/Latitude"
 
 SPEED, BATTERY = 0, 0 #init speed to 0
 LOCATION = [0,0,0]
@@ -27,7 +27,7 @@ def connect_mqtt() -> mqtt_client:
     #         print(f"Failed to connect, return code {rc}, client: {client}\n")
     client = mqtt_client.Client(client_id)
     client.username_pw_set(username, password)
-    #client.on_connect = on_connect
+    # client.on_connect = on_connect
     client.connect(broker, port)
     return client
 
