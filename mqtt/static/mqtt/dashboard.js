@@ -55,18 +55,36 @@ document.getElementById("kmhslider").oninput = function () {
     };
     document.getElementById("valueshow").innerHTML = kmh;
 };
-
+//SECTION 2: HANDLING FUNCTIONS
+function battery_update(battery_level) {
+    indicator = document.getElementById("battery_indicator")
+    indicator.style = `height:${battery_level}%`
+    // added color changes based on low battery
+    if (battery_level < 10) {
+        console.log(10)
+        indicator.setAttribute('class', "battery-level alert")
+    } else if (battery_level < 20) {
+        console.log(20)
+        indicator.setAttribute('class', "battery-level warn")
+    } 
+}
 //NEW: WebSocket Test
 const chatSocket = new WebSocket(
     'ws://'
     + window.location.host
-    + '/ws/speed'
+    + '/ws/data'
 );
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    kmh = data['content']
-    screenUpdate()
+    if (data['module'] == 'daq_speed') {
+        //Speed Data
+        kmh = data['content']
+        screenUpdate()
+    } else if (data['module'] == 'power_energy') {
+        battery_update(data['content'])
+    }
+
 };
 
 chatSocket.onclose = function(e) {

@@ -18,17 +18,21 @@ class SpeedConsumer(WebsocketConsumer):
             'speed',
             self.channel_name
         )
-           
-
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
 
         self.send(text_data=json.dumps({"message": message}))
-    def speed_notif(self, event):
-        print(event)
+    def data_notif(self, event):
         self.send(text_data=json.dumps({
-                'type': 'speed.notif',
+                'type': 'data.notif',
+                'module': event['module'],
+                'content': event['content']
+            })
+        )
+    def battery_notif(self, event):
+        self.send(text_data=json.dumps({
+                'type': 'battery.notif',
                 'content': event['content']
             })
         )
