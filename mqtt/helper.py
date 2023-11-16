@@ -3,10 +3,12 @@ from paho.mqtt import client as mqtt_client
 from .models import MessageHistory
 from datetime import datetime
 import time
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 #topic initialization(tmp)
 speed_topic = "/DAQ/Speed"
-battery_topic = "/DAQ/Energy" #check later
+battery_topic = "/Power_Control/Energy" #check later
 long_topic = "/DAQ/Longitude"
 lat_topic = "/DAQ/Latitude"
 
@@ -39,12 +41,11 @@ def connect_mqtt() -> mqtt_client:
 #   question: how often should different data types be refreshed? ie: speed -> instant, battery -> 1s/5s? reduce system load
 
 def store(msg):
+    channel_layer = get_channel_layer()
     if msg.topic == speed_topic:
-        global SPEED
-        SPEED = int(msg.payload.decode())
+        async_to_sync(channel_layer.group_send)("speed", {"type": "data.notif", "module": "daq_speed", "content": int(msg.payload.decode())})
     elif msg.topic == battery_topic:
-        global BATTERY
-        BATTERY = int(msg.payload.decode())
+        async_to_sync(channel_layer.group_send)("speed", {"type": "data.notif", "module": "power_energy", "content": int(msg.payload.decode())})
     elif msg.topic == long_topic:
         LOCATION[0] = int(msg.payload.decode())
         LOCATION[1] = 0
@@ -52,7 +53,7 @@ def store(msg):
         LOCATION[1] = int(msg.payload.decode())
         LOCATION[2] = 1
 
-    #TODO: IMPLEMENT STORING FEATURE
+    #TODO: IMPLEMENT SORTING/STORING FEATURE
     MessageHistory.objects.create(topic=msg.topic, message = msg.payload.decode(), date=datetime.now())
     print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 

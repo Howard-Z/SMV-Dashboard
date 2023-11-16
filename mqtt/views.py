@@ -3,6 +3,9 @@ from django.http.response import JsonResponse
 from .helper import run, getSpeed, getBattery, getLocation
 import threading
 import time
+from django.shortcuts import HttpResponse
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 # Create your views here.
 
 #SET TOPICS HERE
