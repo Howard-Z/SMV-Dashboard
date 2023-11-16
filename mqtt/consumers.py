@@ -4,7 +4,7 @@ from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 
 
-class SpeedConsumer(WebsocketConsumer):
+class DashboardConsumer(WebsocketConsumer):
     def connect(self):
         async_to_sync(self.channel_layer.group_add)(
             'speed',

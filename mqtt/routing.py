@@ -1,6 +1,6 @@
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.urls import path
-from mqtt.consumers import SpeedConsumer
+from mqtt.consumers import DashboardConsumer
 application =[
-    path('ws/data', SpeedConsumer.as_asgi()),
+    path('ws/dashboard', DashboardConsumer.as_asgi()),
 ]
