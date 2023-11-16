@@ -56,29 +56,20 @@ document.getElementById("kmhslider").oninput = function () {
     document.getElementById("valueshow").innerHTML = kmh;
 };
 
+//NEW: WebSocket Test
+const chatSocket = new WebSocket(
+    'ws://'
+    + window.location.host
+    + '/ws/speed'
+);
+
+chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    kmh = data['content']
+    screenUpdate()
+};
+
+chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+};
 // async refresh speed every 0.5 second
-function refresh() {
-    fetch('/ajax_speed')
-    .then(response => response.json())
-    .then(result => {
-        kmh = result['speed']
-        screenUpdate()
-    })
-}
-function battery() {
-    fetch('/ajax_battery')
-    .then(response => response.json())
-    .then(result => {
-        battery_level = result['level']
-        indicator = document.getElementById("battery_indicator")
-        indicator.style = `height:${battery_level}%`
-        // added color changes based on low battery
-        if (battery_level < 10) {
-            console.log(10)
-            indicator.setAttribute('class', "battery-level alert")
-        } else if (battery_level < 20) {
-            console.log(20)
-            indicator.setAttribute('class', "battery-level warn")
-        } 
-    })
-}

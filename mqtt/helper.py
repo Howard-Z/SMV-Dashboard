@@ -3,6 +3,8 @@ from paho.mqtt import client as mqtt_client
 from .models import MessageHistory
 from datetime import datetime
 import time
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 #topic initialization(tmp)
 speed_topic = "/DAQ/Speed"
@@ -42,6 +44,8 @@ def store(msg):
     if msg.topic == speed_topic:
         global SPEED
         SPEED = int(msg.payload.decode())
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)("speed", {"type": "speed.notif", "content": SPEED})
     elif msg.topic == battery_topic:
         global BATTERY
         BATTERY = int(msg.payload.decode())

@@ -3,6 +3,9 @@ from django.http.response import JsonResponse
 from .helper import run, getSpeed, getBattery, getLocation
 import threading
 import time
+from django.shortcuts import HttpResponse
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 # Create your views here.
 
 #SET TOPICS HERE
@@ -43,6 +46,15 @@ def ajax_location(request):
 
 def map(request):
     return render(request, 'mqtt/map.html')
+
+#async sending functions
+def speed(req):
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)('speed', {
+        'type': 'speed',
+        'content': getSpeed()
+    })
+    return HttpResponse('<p>Done</p>')
 
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", args=[topics], daemon=True)

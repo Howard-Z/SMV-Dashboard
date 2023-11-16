@@ -1,3 +1,5 @@
 Django==3.2.13
 paho-mqtt==1.6.1
 psycopg2==2.9.9
+channels==4.0.0 #needed for websocket project
+daphne==4.0.0
