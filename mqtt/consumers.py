@@ -30,9 +30,3 @@ class DashboardConsumer(WebsocketConsumer):
                 'content': event['content']
             })
         )
-    def battery_notif(self, event):
-        self.send(text_data=json.dumps({
-                'type': 'battery.notif',
-                'content': event['content']
-            })
-        )

@@ -1,8 +1,9 @@
 import random
 from paho.mqtt import client as mqtt_client
-from .models import MessageHistory
+from .models import MessageHistory, Trip
 from datetime import datetime
 import time
+from .topics import topics_list as topics
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
@@ -42,18 +43,18 @@ def connect_mqtt() -> mqtt_client:
 
 def store(msg):
     channel_layer = get_channel_layer()
-    if msg.topic == speed_topic:
-        async_to_sync(channel_layer.group_send)("speed", {"type": "data.notif", "module": "daq_speed", "content": int(msg.payload.decode())})
-    elif msg.topic == battery_topic:
-        async_to_sync(channel_layer.group_send)("speed", {"type": "data.notif", "module": "power_energy", "content": int(msg.payload.decode())})
-    elif msg.topic == long_topic:
-        LOCATION[0] = int(msg.payload.decode())
-        LOCATION[1] = 0
-    elif msg.topic == lat_topic:
-        LOCATION[1] = int(msg.payload.decode())
-        LOCATION[2] = 1
+    topics[msg.topic]['model'].objects.create(date=datetime.now(), data=int(msg.payload.decode()), trip=Trip.objects.last()) #update model
+    if str(msg.topic) != "/DAQ/Latitude" and str(msg.topic) != "/DAQ/Longitude":
+        #do NOT deal with long/lat here. need to implement separate feature to store it
+        pass
+    else:
+        #TODO: SEND TO TEAM VIEW ALWAYS, except for lat/long data
+        pass
+    if str(msg.topic) == "/DAQ/Speed" or str(msg.topic) == "/Power_Control/Energy":
+        #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
+        async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode())})
 
-    #TODO: IMPLEMENT SORTING/STORING FEATURE
+
     MessageHistory.objects.create(topic=msg.topic, message = msg.payload.decode(), date=datetime.now())
     print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
@@ -63,22 +64,8 @@ def subscribe(topic, client: mqtt_client):
     client.subscribe(topic)
     client.on_message = on_message
 
-def run(topics):
+def run():
     client = connect_mqtt()
     for topic in topics:
         subscribe(topic, client)
     client.loop_forever()
-
-#accessor functions
-def getSpeed():
-    global SPEED
-    return SPEED
-def getBattery():
-    global BATTERY
-    return BATTERY
-def getLocation():
-    while(LOCATION[2] != 1):
-        time.sleep(1)
-        getLocation()
-    #returns in format: long, lat
-    return LOCATION[0], LOCATION[1]

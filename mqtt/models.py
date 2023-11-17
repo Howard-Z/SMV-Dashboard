@@ -12,7 +12,7 @@ class Trip(models.Model):
 #set: DAQMessage
 class SpeedData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    speed = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class Location(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
@@ -21,69 +21,79 @@ class Location(models.Model):
     date = models.DateTimeField()
 class CurrentData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    current = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 #set: powerMessage
 class VoltageData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    voltage = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class PowerData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    power = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class EnergyData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    energy = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class T1Data(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    t1 = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class T2Data(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    t1 = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 
 class T3Data(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    t1 = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+class P_Error_StatusData(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 #set: steeringMessage
 class Switch_EncodingData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    Switch_Encoding = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+
+
+class S_Error_StatusData(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 
 #set: motorMessage
 class RPMData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    rpm = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class Motor_StateData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    Motor_State = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class CruiseData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    cruise = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class M_Error_StatusData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    M_Error_Status = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class ThrottleData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    throttle = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 class BrakeData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    brake = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 
 class Meter_CountData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    Meter_Count = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
 
 class MessageHistory(models.Model):

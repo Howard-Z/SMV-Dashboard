@@ -4,9 +4,6 @@
 <link rel="stylesheet" href="{% static 'mqtt/styles.css' %}">
 {% endblock %}
 {% block body %}
-<button class="btn btn-danger" onclick="stop_ajax()">STOP AJAX</button>
-<button class="btn btn-danger" onclick="start_ajax()">START AJAX</button>
-
     <div id="gaugecontainer">
         <div id="gauge">
             <div id="scale"></div>
@@ -71,18 +68,4 @@
 
 {% block js %}
 <script src="{% static 'mqtt/dashboard.js' %}"></script>
-<script>
-  //increase second parameter for increased responsiveness at the cost of server load(1=fast, but 1000 ajax calls per second)
-//10 => 0.76s responsiveness, 1 => 0.38s, 1000 => ~2s 
-RefreshInterval = setInterval(refresh, 10)
-BatteryInterval = setInterval(battery, 3000)
-function stop_ajax() {
-  clearInterval(RefreshInterval)
-  clearInterval(BatteryInterval)
-}
-function start_ajax() {
-  RefreshInterval = setInterval(refresh, 10)
-  BatteryInterval = setInterval(battery, 3000)
-}
-</script>
 {% endblock %}

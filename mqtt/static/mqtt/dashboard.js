@@ -45,16 +45,6 @@ function movescale() {
     document.getElementById("center_gauge").innerHTML = kmh + " kmh"
 };
 
-//switching the trip display
-var km = 0;
-var deci = 0;
-
-document.getElementById("kmhslider").oninput = function () {
-    if (InitialSweepInterv == null) {
-    kmh = this.value;
-    };
-    document.getElementById("valueshow").innerHTML = kmh;
-};
 //SECTION 2: HANDLING FUNCTIONS
 function battery_update(battery_level) {
     indicator = document.getElementById("battery_indicator")
@@ -68,7 +58,7 @@ function battery_update(battery_level) {
         indicator.setAttribute('class', "battery-level warn")
     } 
 }
-//NEW: WebSocket Test
+//NEW: WebSocket
 const chatSocket = new WebSocket(
     'ws://'
     + window.location.host
@@ -77,17 +67,23 @@ const chatSocket = new WebSocket(
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    if (data['module'] == 'daq_speed') {
-        //Speed Data
-        kmh = data['content']
-        screenUpdate()
-    } else if (data['module'] == 'power_energy') {
-        battery_update(data['content'])
-    }
+    switch (data['module']) {
+        case 'daq.speed':
+            //Speed Data
+            kmh = data['content']
+            screenUpdate()
+            break;
+        case 'power_control.energy':
+            //Battery Data
+            battery_update(data['content'])
+            break;
+        //implement rest of the cases for all dashboard modules
+        default:
+            break;
 
+    }
 };
 
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
 };
-// async refresh speed every 0.5 second
