@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o@)!%p2vqem$@#emdls)%t!jvw@dph2mk^t!qj6q(#jeq#f&_k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -79,9 +79,6 @@ ASGI_APPLICATION = 'smvDashboard.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
-
-}
-DATABASES = {
     'prod': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -97,7 +94,7 @@ DATABASES = {
   }
 }
 
-DATABASES['default'] = DATABASES['dev' if DEBUG else 'prod']
+DATABASES['default'] = DATABASES['dev' if DEBUG else 'dev']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -148,7 +145,15 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CHANNEL_LAYERS = {
-    'default': {
+    'dev': {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
     },
+    "prod": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
 }
+
+CHANNEL_LAYERS['default'] = ['dev' if DEBUG else 'prod']

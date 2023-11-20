@@ -32,6 +32,7 @@ def connect_mqtt() -> mqtt_client:
     client.username_pw_set(username, password)
     # client.on_connect = on_connect
     client.connect(broker, port)
+    print("connected")
     return client
 
 #returns global SPEED var for use in dashboard ajax call. avoids writing and pulling from db

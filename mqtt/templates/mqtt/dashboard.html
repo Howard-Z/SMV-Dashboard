@@ -4,61 +4,8 @@
 <link rel="stylesheet" href="{% static 'mqtt/styles.css' %}">
 {% endblock %}
 {% block body %}
-    <div id="gaugecontainer">
-        <div id="gauge">
-            <div id="scale"></div>
-            <div id="scalemask"></div>
-            <div id="zeromark"></div>
-            <div id="gaugelabel">KM/H</div>
 
-            <div class="labelpos" id="pos0">⠀⠀0</div>
-            <div class="labelpos" id="pos20">
-                <div class="scLab" id="lab20">⠀20</div>
-            </div>
-            <div class="labelpos" id="pos40">
-                <div class="scLab" id="lab40">⠀40</div>
-            </div>
-            <div class="labelpos" id="pos60">
-                <div class="scLab" id="lab60">⠀60</div>
-            </div>
-            <div class="labelpos" id="pos80">
-                <div class="scLab" id="lab80">⠀80</div>
-            </div>
-            <div class="labelpos" id="pos100">
-                <div class="scLab" id="lab100">100</div>
-            </div>
-            <div class="labelpos" id="pos120">
-                <div class="scLab" id="lab120">120</div>
-            </div>
-            <div class="labelpos" id="pos140">
-                <div class="scLab" id="lab140">140</div>
-            </div>
-            <div class="labelpos" id="pos160">
-                <div class="scLab" id="lab160">160</div>
-            </div>
-            <div class="labelpos" id="pos180">
-                <div class="scLab" id="lab180">180</div>
-            </div>
-            <div class="labelpos" id="pos200">
-                <div class="scLab" id="lab200">200</div>
-            </div>
-            <div class="labelpos" id="pos220">
-                <div class="scLab" id="lab220">220</div>
-            </div>
-            <div class="labelpos" id="pos240">
-                <div class="scLab" id="lab240">240</div>
-            </div>
-            <div class="labelpos" id="pos260">
-                <div class="scLab" id="lab260">260</div>
-            </div>
-        </div>
-        <div id="center"><div id="center_gauge" style="margin-left: 25%;margin-top: 35%;font-size: 50px;">20 kmh</div></div>
-    </div>
-
-    <div class="slidecontainer" style="display:none">
-        <input type="range" min="0" max="270" value="1" class="slider" id="kmhslider">
-        <p>km/h: <span id="valueshow"></span></p>
-    </div>
+        <div id="center_gauge" style="margin-left: 40%;margin-top: 20%;font-size: 100px;">0 mph</div>
       <div class="battery">
         <div id = "battery_indicator" class="battery-level" style="height:100%;"></div>
       </div>
