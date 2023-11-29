@@ -1,16 +1,12 @@
 import random
 from paho.mqtt import client as mqtt_client
-from .models import MessageHistory
+from .models import MessageHistory, Trip, MQTTError
 from datetime import datetime
 import time
+from .topics import topics_list as topics
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
-#topic initialization(tmp)
-speed_topic = "/DAQ/Speed"
-battery_topic = "/DAQ/Energy" #check later
-long_topic = "/DAQ/Longitude"
-lat_topic = "/DAQ/Latitude"
-
-SPEED, BATTERY = 0, 0 #init speed to 0
 LOCATION = [0,0,0]
 
 broker = 'apt.howard-zhu.com'
@@ -20,15 +16,16 @@ client_id = f'subscribe-{random.randint(0, 100)}'
 username = 'homeassistant'
 password = 'gelaithah9ajiecohlahteigeizeeCuNeichoow5thaaquiPhaCh5quu6zoo0ael'
 def connect_mqtt() -> mqtt_client:
-    # def on_connect(client, userdata, flags, rc):
-    #     if rc == 0:
-    #         print("Connected to MQTT Broker!")
-    #     else:
-    #         print(f"Failed to connect, return code {rc}, client: {client}\n")
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            MQTTError.objects.create(module='mqtt', event='connect', message='connected', error=False, time=datetime.now())
+        else:
+            MQTTError.objects.create(module='mqtt', event='connect', message=f"Failed to connect, return code {rc}, client: {client}\n", error=True, time=datetime.now())
     client = mqtt_client.Client(client_id)
     client.username_pw_set(username, password)
-    # client.on_connect = on_connect
+    client.on_connect = on_connect
     client.connect(broker, port)
+    print("connected")
     return client
 
 #returns global SPEED var for use in dashboard ajax call. avoids writing and pulling from db
@@ -39,21 +36,19 @@ def connect_mqtt() -> mqtt_client:
 #   question: how often should different data types be refreshed? ie: speed -> instant, battery -> 1s/5s? reduce system load
 
 def store(msg):
-    if msg.topic == speed_topic:
-        global SPEED
-        SPEED = int(msg.payload.decode())
-    elif msg.topic == battery_topic:
-        global BATTERY
-        BATTERY = int(msg.payload.decode())
-    elif msg.topic == long_topic:
-        LOCATION[0] = int(msg.payload.decode())
-        LOCATION[1] = 0
-    elif msg.topic == lat_topic:
-        LOCATION[1] = int(msg.payload.decode())
-        LOCATION[2] = 1
+    channel_layer = get_channel_layer()
+    topics[msg.topic]['model'].objects.create(date=datetime.now(), data=int(msg.payload.decode()), trip=Trip.objects.last()) #update model
+    if str(msg.topic) != "/DAQ/Latitude" and str(msg.topic) != "/DAQ/Longitude":
+        #do NOT deal with long/lat here. need to implement separate feature to store it
+        pass
+    else:
+        #TODO: SEND TO TEAM VIEW ALWAYS, except for lat/long data
+        pass
+    if str(msg.topic) == "/DAQ/Speed" or str(msg.topic) == "/Power_Control/Energy":
+        #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
+        async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
 
-    #TODO: IMPLEMENT STORING FEATURE
-    MessageHistory.objects.create(topic=msg.topic, message = msg.payload.decode(), date=datetime.now())
+    MessageHistory.objects.create(topic=msg.topic, message = msg.payload.decode(), date=datetime.now(), trip=Trip.objects.last())
     print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
 def subscribe(topic, client: mqtt_client):
@@ -62,22 +57,8 @@ def subscribe(topic, client: mqtt_client):
     client.subscribe(topic)
     client.on_message = on_message
 
-def run(topics):
+def run():
     client = connect_mqtt()
     for topic in topics:
         subscribe(topic, client)
     client.loop_forever()
-
-#accessor functions
-def getSpeed():
-    global SPEED
-    return SPEED
-def getBattery():
-    global BATTERY
-    return BATTERY
-def getLocation():
-    while(LOCATION[2] != 1):
-        time.sleep(1)
-        getLocation()
-    #returns in format: long, lat
-    return LOCATION[0], LOCATION[1]

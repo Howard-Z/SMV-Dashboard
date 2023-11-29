@@ -12,6 +12,23 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import sentry_sdk
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+sentry_sdk.init(
+    dsn="https://8c2277f2745be76cc3c8f9b1fb3afd3b@o1217115.ingest.sentry.io/4506261170356224",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+    environment=f"{'development' if DEBUG else 'production'}",
+
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,8 +40,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-o@)!%p2vqem$@#emdls)%t!jvw@dph2mk^t!qj6q(#jeq#f&_k'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -32,14 +48,16 @@ ALLOWED_HOSTS = ['localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    "channels",
+    'mqtt',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.admindocs',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'mqtt'
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
@@ -71,13 +89,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'smvDashboard.wsgi.application'
+ASGI_APPLICATION = 'smvDashboard.asgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-DATABASES = {
-
-}
 DATABASES = {
     'prod': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -94,7 +110,7 @@ DATABASES = {
   }
 }
 
-DATABASES['default'] = DATABASES['dev' if DEBUG else 'prod']
+DATABASES['default'] = DATABASES['dev' if DEBUG else 'dev']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -143,3 +159,17 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CHANNEL_LAYERS = {
+    # 'default': {
+    #     'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    # },
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
+
+# CHANNEL_LAYERS['default'] = ['dev' if DEBUG else 'dev']

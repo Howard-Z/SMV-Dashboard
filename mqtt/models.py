@@ -12,83 +12,140 @@ class Trip(models.Model):
 #set: DAQMessage
 class SpeedData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    speed = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = " Speed Data" 
 class Location(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
     longitude = models.DecimalField(max_digits=11, decimal_places=7)
     longitude = models.DecimalField(max_digits=11, decimal_places=7)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = " Location Data" 
+#set: powerMessage
 class CurrentData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    current = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
-#set: powerMessage
+    class Meta:
+        verbose_name_plural = "  Current Data" 
 class VoltageData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    voltage = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Voltage Data" 
 class PowerData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    power = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Power Data" 
 class EnergyData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    energy = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Energy Data" 
 class T1Data(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    t1 = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  T1 Data" 
 class T2Data(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    t1 = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  T2 Data" 
 
 class T3Data(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    t1 = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  T3 Data" 
+class P_Error_StatusData(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  P Error Status Data" 
 #set: steeringMessage
 class Switch_EncodingData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    Switch_Encoding = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "   Switch Encoding Data" 
+
+
+class S_Error_StatusData(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "   S Error Status Data" 
 
 #set: motorMessage
 class RPMData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    rpm = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "    RPM Data" 
 class Motor_StateData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    Motor_State = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "    Motor State Data" 
 class CruiseData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    cruise = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "    Cruise Data" 
 class M_Error_StatusData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    M_Error_Status = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "    M Error Status Data" 
 class ThrottleData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    throttle = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "    Throttle Data" 
 class BrakeData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    brake = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "    Brake Data" 
 
 class Meter_CountData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    Meter_Count = models.DecimalField(max_digits=6, decimal_places=3)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "    Meter Count Data" 
 
+#extra data
 class MessageHistory(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, default=None, blank=None)
     topic = models.CharField(max_length=128)
     message = models.TextField()
     date = models.DateTimeField()
     def __str__(self):
         return self.topic
+class MQTTError(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, default=None, blank=None)
+    module = models.CharField(max_length=30, choices = (("mqtt", "mqtt"), ("ws", "ws")))
+    event = models.CharField(max_length=30, choices = (("connect", "connect"), ("disconnect", "disconnect"), ("receive_message", "receive_message")))
+    message = models.TextField()
+    error = models.BooleanField()
+    time = models.DateTimeField()

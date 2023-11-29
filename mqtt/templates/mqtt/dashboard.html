@@ -1,161 +1,18 @@
 {% extends 'mqtt/index.html' %}
 {% load static %}
-{% block js %}
+{% block css %}
 <link rel="stylesheet" href="{% static 'mqtt/styles.css' %}">
-<!-- push to separate CSS file? -->
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-        // kmh gauge script
-var basegradient = "repeating-conic-gradient(from 270deg, black  0deg 0.3deg, var(--color) 0.7deg 1.3deg, black  1.7deg 2deg)"
-
-var kmh = 0;
-kmh = Math.max(0, Math.min(kmh, 270));
-
-//log styles
-var green = "color: seagreen; background-color: black; border: 1px solid seagreen; padding: 4px;";
-var blue = "color: darkcyan; background-color: black; border: 1px solid darkcyan; padding: 4px;";
-var orange = "color: orange; background-color: black; border: 1px solid orange; padding: 4px;";
-var red = "color: red; background-color: black; border: 2px solid red; padding: 3px;";
-
-window.onload = function () {
-  console.clear();
-};
-
-//initial sweep
-var sweepProgress = 0;
-var InitialSweepInterv = setInterval(initialSweep, 20);
-function initialSweep() {
-    clearInterval(InitialSweepInterv);
-    //check if below is null to do things after initial sweep
-    InitialSweepInterv = null;
-  }
-
-
-//updating the gaug each frame
-var ScreenUpdateInterv = setInterval(screenUpdate, 20);
-function screenUpdate() {
-  //ensuring no half bars are displayed (1 bar = 2kmh)
-  if (kmh % 2 == 0) {
-    movescale();
-  } else {
-    //rounds odd speed values down. desired behavior?
-    kmh--;
-    movescale();
-    kmh++;
-  };
-};
-
-
-
-function movescale() {
-  document.getElementById("gauge").style = "background: " + basegradient + ", conic-gradient(from 270deg, white 0deg " + kmh + "deg, black " + kmh + "deg);"
-  document.getElementById("center_gauge").innerHTML = kmh + " kmh"
-};
-
-//switching the trip display
-var km = 0;
-var deci = 0;
-
-document.getElementById("kmhslider").oninput = function () {
-  if (InitialSweepInterv == null) {
-    kmh = this.value;
-  };
-  document.getElementById("valueshow").innerHTML = kmh;
-};
-
-// async refresh speed every 0.5 second
-function refresh() {
-    fetch('/ajax_speed')
-    .then(response => response.json())
-    .then(result => {
-        kmh = result['speed']
-        screenUpdate()
-    })
-}
-function battery() {
-    fetch('/ajax_battery')
-    .then(response => response.json())
-    .then(result => {
-        battery_level = result['level']
-        indicator = document.getElementById("battery_indicator")
-        indicator.style = `height:${battery_level}%`
-        // added color changes based on low battery
-        if (battery_level < 10) {
-          console.log(10)
-          indicator.setAttribute('class', "battery-level alert")
-        } else if (battery_level < 20) {
-          console.log(20)
-          indicator.setAttribute('class', "battery-level warn")
-        } 
-    })
-}
-//increase second parameter for increased responsiveness at the cost of server load(1=fast, but 1000 ajax calls per second)
-//10 => 0.76s responsiveness, 1 => 0.38s, 1000 => ~2s 
-setInterval(refresh, 10)
-setInterval(battery, 3000)
-
-}) //end DOMContentLoaded 
-</script>
 {% endblock %}
 {% block body %}
-    <div id="gaugecontainer">
-        <div id="gauge">
-            <div id="scale"></div>
-            <div id="scalemask"></div>
-            <div id="zeromark"></div>
-            <div id="gaugelabel">KM/H</div>
 
-            <div class="labelpos" id="pos0">⠀⠀0</div>
-            <div class="labelpos" id="pos20">
-                <div class="scLab" id="lab20">⠀20</div>
-            </div>
-            <div class="labelpos" id="pos40">
-                <div class="scLab" id="lab40">⠀40</div>
-            </div>
-            <div class="labelpos" id="pos60">
-                <div class="scLab" id="lab60">⠀60</div>
-            </div>
-            <div class="labelpos" id="pos80">
-                <div class="scLab" id="lab80">⠀80</div>
-            </div>
-            <div class="labelpos" id="pos100">
-                <div class="scLab" id="lab100">100</div>
-            </div>
-            <div class="labelpos" id="pos120">
-                <div class="scLab" id="lab120">120</div>
-            </div>
-            <div class="labelpos" id="pos140">
-                <div class="scLab" id="lab140">140</div>
-            </div>
-            <div class="labelpos" id="pos160">
-                <div class="scLab" id="lab160">160</div>
-            </div>
-            <div class="labelpos" id="pos180">
-                <div class="scLab" id="lab180">180</div>
-            </div>
-            <div class="labelpos" id="pos200">
-                <div class="scLab" id="lab200">200</div>
-            </div>
-            <div class="labelpos" id="pos220">
-                <div class="scLab" id="lab220">220</div>
-            </div>
-            <div class="labelpos" id="pos240">
-                <div class="scLab" id="lab240">240</div>
-            </div>
-            <div class="labelpos" id="pos260">
-                <div class="scLab" id="lab260">260</div>
-            </div>
-        </div>
-        <div id="center"><div id="center_gauge" style="margin-left: 25%;margin-top: 35%;font-size: 50px;">20 kmh</div></div>
-    </div>
-
-    <div class="slidecontainer" style="display:none">
-        <input type="range" min="0" max="270" value="1" class="slider" id="kmhslider">
-        <p>km/h: <span id="valueshow"></span></p>
-    </div>
+        <div id="center_gauge" style="margin-left: 40%;margin-top: 20%;font-size: 100px;">0 mph</div>
       <div class="battery">
         <div id = "battery_indicator" class="battery-level" style="height:100%;"></div>
       </div>
 
 
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'mqtt/dashboard.js' %}"></script>
 {% endblock %}
