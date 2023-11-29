@@ -14,10 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, reverse
+from django.shortcuts import redirect
+
 admin.site.enable_nav_sidebar = False
+admin.site.site_header = 'SMV Admin Dashboard'
+admin.site.site_title  =  "SMV Admin Dashboard"
+admin.site.index_title  =  "Car Data"
+
+def redirect_home(request):
+    return redirect(reverse('index'))
 
 urlpatterns = [
+    path('', redirect_home),
     path('admin/', admin.site.urls),
-    path('', include('mqtt.urls'))
+    path('dashboard/', include('mqtt.urls')),
 ]
