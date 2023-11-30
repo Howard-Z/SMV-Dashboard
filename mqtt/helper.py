@@ -13,8 +13,8 @@ broker = 'apt.howard-zhu.com'
 port = 1883
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
-username = 'homeassistant'
-password = 'gelaithah9ajiecohlahteigeizeeCuNeichoow5thaaquiPhaCh5quu6zoo0ael'
+# username = 'homeassistant'
+# password = 'gelaithah9ajiecohlahteigeizeeCuNeichoow5thaaquiPhaCh5quu6zoo0ael'
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -22,7 +22,7 @@ def connect_mqtt() -> mqtt_client:
         else:
             MQTTError.objects.create(module='mqtt', event='connect', message=f"Failed to connect, return code {rc}, client: {client}\n", error=True, time=datetime.now())
     client = mqtt_client.Client(client_id)
-    client.username_pw_set(username, password)
+    # client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect(broker, port)
     print("connected")
