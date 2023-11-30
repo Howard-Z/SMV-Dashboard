@@ -36,3 +36,34 @@ class DashboardConsumer(WebsocketConsumer):
                 'error': event['error']
             })
         )
+
+class TeamConsumer(WebsocketConsumer):
+    def connect(self):
+        async_to_sync(self.channel_layer.group_add)(
+            'teamdata',
+            self.channel_name
+        )
+        self.groups.append("teamdata")
+        self.accept()
+        MQTTError.objects.create(module='ws', event='connect', message='connected', error=False, time=datetime.now())
+
+    def disconnect(self, close_code):
+        async_to_sync(self.channel_layer.group_discard)(
+            'teamdata',
+            self.channel_name
+        )
+        MQTTError.objects.create(module='ws', event='disconnect', message='disconnected', error=False, time=datetime.now())
+
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+
+        self.send(text_data=json.dumps({"message": message}))
+    def team_notif(self, event):
+        self.send(text_data=json.dumps({
+                'type': 'team.notif',
+                'module': event['module'],
+                'content': event['content'],
+                'error': event['error']
+            })
+        )

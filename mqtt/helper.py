@@ -43,7 +43,7 @@ def store(msg):
         pass
     else:
         #TODO: SEND TO TEAM VIEW ALWAYS, except for lat/long data
-        pass
+        async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
     if str(msg.topic) == "/DAQ/Speed" or str(msg.topic) == "/Power_Control/Energy":
         #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
         async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
