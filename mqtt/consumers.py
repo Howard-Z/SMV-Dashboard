@@ -6,6 +6,8 @@ from asgiref.sync import async_to_sync
 
 
 class DashboardConsumer(WebsocketConsumer):
+    #GROUP NAME: speed
+    #TYPE NAME: data.notif
     def connect(self):
         async_to_sync(self.channel_layer.group_add)(
             'speed',
@@ -38,6 +40,8 @@ class DashboardConsumer(WebsocketConsumer):
         )
 
 class TeamConsumer(WebsocketConsumer):
+    #GROUP NAME: teamdata
+    #TYPE NAME: team.notif    
     def connect(self):
         async_to_sync(self.channel_layer.group_add)(
             'teamdata',

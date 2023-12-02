@@ -9,6 +9,7 @@ topics_list = {
         "/Bear_1/Motor_State": {
         "name": "bear1.motor_state",
         "model": Motor_StateData
+        #error not 1-6
     },
         "/Bear_1/Cruise": {
         "name": "bear1.cruise",
@@ -17,18 +18,22 @@ topics_list = {
         "/Bear_1/M_Error_Status": {
         "name": "bear1.m_error_status",
         "model": M_Error_StatusData
+        #error not 1-6
     },
         "/Bear_1/Throttle": {
         "name": "bear1.throttle",
         "model": ThrottleData
+        #error above 1028: check teensy output range
     },
     "/Bear_1/Brake": {
         "name": "bear1.brake",
         "model": BrakeData
+        #check back
     },
     "/Bear_1/Meter_Count": {
         "name": "bear1.meter_count",
         "model": Meter_CountData
+        #check back
     },    
     #bear_2
     "/Bear_2/RPM": {
@@ -63,10 +68,12 @@ topics_list = {
     "/Power_Control/Current": {
         "name": "power_control.current",
         "model": CurrentData
+        # >120 A check back
     },
     "/Power_Control/Voltage": {
         "name": "power_control.voltage",
         "model": VoltageData
+        # >55 V
     },
     "/Power_Control/Power": {
         "name": "power_control.power",

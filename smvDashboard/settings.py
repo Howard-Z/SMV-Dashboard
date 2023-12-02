@@ -13,18 +13,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import sentry_sdk
+from dotenv import load_dotenv
 
+load_dotenv()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 sentry_sdk.init(
     dsn="https://8c2277f2745be76cc3c8f9b1fb3afd3b@o1217115.ingest.sentry.io/4506261170356224",
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
     traces_sample_rate=1.0,
-    # Set profiles_sample_rate to 1.0 to profile 100%
-    # of sampled transactions.
-    # We recommend adjusting this value in production.
     profiles_sample_rate=1.0,
     environment=f"{'development' if DEBUG else 'production'}",
 
@@ -38,11 +35,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o@)!%p2vqem$@#emdls)%t!jvw@dph2mk^t!qj6q(#jeq#f&_k'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-o@)!%p2vqem$@#emdls)%t!jvw@dph2mk^t!qj6q(#jeq#f&_k')
+
+ALLOWED_HOSTS_TYPES = {
+    "dev":
+    ['localhost'], 
+     "prod":
+    ['smv.seas.ucla.edu'], 
+}
 
 
-
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ALLOWED_HOSTS_TYPES['dev' if DEBUG else 'prod']
 
 
 # Application definition
@@ -103,7 +106,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'smv-dashboard',
         'USER': 'matthewt-123',
-        'PASSWORD': 'MAZD1Hc3JlIo',
+        'PASSWORD': os.environ.get("NEON_TECH_PW", 'MAZD1Hc3JlIo'),
         'HOST': 'ep-withered-disk-57211304.us-west-2.aws.neon.tech',
         'PORT': '5432',
         'OPTIONS': {'sslmode': 'require'},
@@ -161,9 +164,6 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CHANNEL_LAYERS = {
-    # 'default': {
-    #     'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    # },
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
@@ -171,5 +171,3 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
-# CHANNEL_LAYERS['default'] = ['dev' if DEBUG else 'dev']
