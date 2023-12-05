@@ -32,7 +32,6 @@ topics_list = {
     "/Bear_1/Meter_Count": {
         "name": "bear1.meter_count",
         "model": Meter_CountData
-        #check back
     },    
     #bear_2
     "/Bear_2/RPM": {
