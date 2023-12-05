@@ -4,11 +4,22 @@
 <link rel="stylesheet" href="{% static 'mqtt/styles.css' %}">
 {% endblock %}
 {% block body %}
-
-        <div id="center_gauge" style="margin-left: 40%;margin-top: 20%;font-size: 100px;">0 mph</div>
+<div style="width: 40%; height: 50%; left: 29.6%; top: 24.8%; position: absolute;"></div>
+<div style="width: 15%; height: 50%; left: 7%; top: 24.8%; position: absolute;"></div>
+<div style="width: 5%; height: 10%; left: 88.6%; top: 9.6%; position: absolute;">Motor 2 Error</div>
+<div style="width: 5%; height: 10%; left: 77%; top: 9.6%; position: absolute;">Motor 1 Error</div>
+<div style="width: 5%; height: 10%; left: 88.6%; top: 27.2%; position: absolute;"><img src="{% static 'mqtt/throttle_error_symbol.png' %}" height="100%" width="100%"></div>
+<div style="width: 5%; height: 10%; left: 77%; top: 27.2%; position: absolute;"><img src="{% static 'mqtt/brake_error_symbol.png' %}" height="100%" width="100%"></div>
+<div style="width: 5%; height: 10%; left: 88.6%; top: 44.8%; position: absolute;">Power Error</div>
+<div style="width: 5%; height: 10%; left: 77%; top: 44.8%; position: absolute;"><img src="{% static 'mqtt/steering_error_symbol.png' %}" height="100%" width="100%"></div>
+<div style="width: 5%; height: 10%; left: 88.6%; top: 80%; position: absolute;"><img src="{% static 'mqtt/temp_error_symbol.png' %}" height="100%" width="100%"></div>
+<div style="width: 5%; height: 10%; left: 77%; top: 80%; position: absolute;"></div>
+<div style="width: 5%; height: 10%; left: 88.6%; top: 62.4%; position: absolute;"></div>
+<div style="width: 5%; height: 10%; left: 77%; top: 62.4%; position: absolute;"></div>
+        <!-- <div id="center_gauge" style="margin-left: 40%;margin-top: 20%;font-size: 100px;">0 mph</div>
       <div class="battery">
         <div id = "battery_indicator" class="battery-level" style="height:100%;"></div>
-      </div>
+      </div> -->
 
 
 {% endblock %}
