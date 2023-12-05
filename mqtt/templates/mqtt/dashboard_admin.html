@@ -5,13 +5,55 @@
 {% endblock %}
 {% block body %}
 {% if user.is_superuser %}
-<h1>Dashboard Admin Actions</h1>
+
+<h1 style="margin-top:2%;margin-left:2%">Dashboard Admin Actions</h1>
+
+  </div>
 {% csrf_token %}
 <div id="alert" class='alert alert-success' style="display: none;"></div>
-<div class='flex-container' style='display:flex;height:100px;align-items: space-around;justify-content: center;flex-direction: row;gap:5%;flex-wrap: wrap;'>
-    <div>
-        <button class='btn btn-primary' onclick="confirm_refresh()">Increment Trip</button>
+<div style="margin-left:5%;margin-top:5%">
+
+    <div class='flex-container' style='display:flex;height:100px;align-items: space-around;justify-content: center;flex-direction: row;gap:5%;flex-wrap: wrap;'>
+        <div>
+            <button class='btn btn-primary' onclick="increment_trip()">Increment Trip</button>
+        </div>
     </div>
+    <table width="100%">
+        <tbody>
+            <tr><td>
+                <div>
+                    <h4>    Active Trip: 
+                    </h4>
+                        <ol>
+                            <li>
+                                <b>Name:</b> {{trip.name}}
+                            </li>
+                            <li>
+                                <b>Created:</b> {{trip.date_created}}
+                            </li>
+                        </ol>
+                    </div>
+            </td>
+        <td>
+            <h4>    Site Map 
+            </h4>
+                <ol>
+                    <li>
+                        <a href="{% url 'index' %}">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'admin:index' %}">Admin</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dash_admin' %}">Dashboard Admin</a>
+                    </li>
+                </ol>
+            </div>
+            
+        </td></tr>
+        
+        </tbody>
+    </table>
 
 </div>
 
@@ -22,13 +64,27 @@
 {% block js %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script>
-        function confirm_refresh() {
-        var result = confirm("Would you like to send an email to all users?");
-            if (result == true) {
-                doc = admin(function1="refresh");
-            } else {
-                alert("Action Cancelled");
+    function increment_trip() {
+        let name = prompt("Trip Name")
+        fetch(`{% url 'dash_admin' %}`, {
+            method: 'POST',
+            headers: {
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                },
+            credentials: 'same-origin',
+            body: JSON.stringify({
+                'data': `${name}`,
+                'feature': "increment_trip"
+            })
+        })
+        .then(response=>response.json())
+        .then(result => {
+            if(result['status'] == 200) {
+                const alert = document.getElementById('alert')
+                alert.innerHTML = `${function1} completed successfully`
+                alert.style.display='block'
             }
+        })
     };
     function admin(function1) {
         fetch(`/admin_view`, {

@@ -9,7 +9,6 @@ topics_list = {
         "/Bear_1/Motor_State": {
         "name": "bear1.motor_state",
         "model": Motor_StateData
-        #error not 1-6
     },
         "/Bear_1/Cruise": {
         "name": "bear1.cruise",
@@ -18,7 +17,7 @@ topics_list = {
         "/Bear_1/M_Error_Status": {
         "name": "bear1.m_error_status",
         "model": M_Error_StatusData
-        #error not 1-6
+        #error 1, check
     },
         "/Bear_1/Throttle": {
         "name": "bear1.throttle",
@@ -44,6 +43,7 @@ topics_list = {
         "name": "bear1.motor_state",
         "model": Motor_StateData
     },
+    
     "/Bear_2/Cruise": {
         "name": "bear1.cruise",
         "model": CruiseData
@@ -51,7 +51,10 @@ topics_list = {
     "/Bear_2/M_Error_Status": {
         "name": "bear1.m_error_status",
         "model": M_Error_StatusData
+        #error 1, check
+
     },
+
     "/Bear_2/Throttle": {
         "name": "bear1.throttle",
         "model": ThrottleData

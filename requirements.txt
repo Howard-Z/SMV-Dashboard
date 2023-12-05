@@ -3,6 +3,6 @@ paho-mqtt==1.6.1
 psycopg2==2.9.9
 channels==4.0.0 #needed for websocket project
 daphne==4.0.0
-dotenv
+python-dotenv
 channels-redis
 sentry_sdk #error logging

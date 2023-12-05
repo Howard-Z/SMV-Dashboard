@@ -99,8 +99,13 @@ ASGI_APPLICATION = 'smvDashboard.asgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 DATABASES = {
     'prod': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': os.environ.get("POSTGRES_PW"),
+        'HOST': '10.147.17.93',
+        'PORT': '5432',
+        'OPTIONS': {'sslmode': 'prefer'},
     },
     'dev': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -113,7 +118,7 @@ DATABASES = {
   }
 }
 
-DATABASES['default'] = DATABASES['dev' if DEBUG else 'dev']
+DATABASES['default'] = DATABASES['dev' if DEBUG else 'prod']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -167,7 +172,9 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],
+            "hosts": [("10.147.17.93", 6379)],
         },
     },
 }
+
+CSRF_TRUSTED_ORIGINS = ['http://10.147.17.52', 'https://smv.seas.ucla.edu']
