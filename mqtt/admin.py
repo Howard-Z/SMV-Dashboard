@@ -5,9 +5,10 @@ from .models import EnergyData, T1Data, T2Data, T3Data, Switch_EncodingData, S_E
 #columns
 class MessageHistoryAdmin(admin.ModelAdmin):
     list_display = ("id", "topic", "date", "trip")
-
+class MQTTErrorAdmin(admin.ModelAdmin):
+    list_display = ("trip", "module", "event", "time")
 # Register your models here.
-admin.site.register(MQTTError)
+admin.site.register(MQTTError, MQTTErrorAdmin)
 admin.site.register(EnergyData)
 admin.site.register(T1Data)
 admin.site.register(T2Data)

@@ -6,26 +6,26 @@ import time
 from .topics import topics_list as topics
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+import os
 
 LOCATION = [0,0,0]
 
-broker = 'apt.howard-zhu.com'
+broker = '10.147.17.93'
 port = 1883
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
-# username = 'homeassistant'
-# password = 'gelaithah9ajiecohlahteigeizeeCuNeichoow5thaaquiPhaCh5quu6zoo0ael'
+username = 'smv'
+password = os.environ.get("MQTT_PW")
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
-            MQTTError.objects.create(module='mqtt', event='connect', message='connected', error=False, time=datetime.now())
+            MQTTError.objects.create(module='mqtt', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
         else:
-            MQTTError.objects.create(module='mqtt', event='connect', message=f"Failed to connect, return code {rc}, client: {client}\n", error=True, time=datetime.now())
+            MQTTError.objects.create(module='mqtt', event='connect', message=f"Failed to connect, return code {rc}, client: {client}\n", error=True, time=datetime.now(), trip=Trip.objects.last())
     client = mqtt_client.Client(client_id)
-    # client.username_pw_set(username, password)
+    client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect(broker, port)
-    print("connected")
     return client
 
 def store(msg):
@@ -39,13 +39,9 @@ def store(msg):
     else:
         #send to team view always, except for lat/long data
         async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
-    if str(msg.topic) == "/DAQ/Speed" or str(msg.topic) == "/Power_Control/Energy":
+    if str(msg.topic) in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
         #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
         async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
-
-    #send all messages to MessageHistory. Temp DEBUG. Remove before prod
-    MessageHistory.objects.create(topic=msg.topic, message = msg.payload.decode(), date=datetime.now(), trip=Trip.objects.last())
-    # print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
 def subscribe(topic, client: mqtt_client):
     def on_message(client, userdata, msg):
