@@ -4,7 +4,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 {% endblock %}
 {% block body %}
-{% if user.is_superuser %}
+{% if user.is_staff %}
 
 <h1 style="margin-top:2%;margin-left:2%">Dashboard Admin Actions</h1>
 
@@ -16,6 +16,9 @@
     <div class='flex-container' style='display:flex;height:100px;align-items: space-around;justify-content: center;flex-direction: row;gap:5%;flex-wrap: wrap;'>
         <div>
             <button class='btn btn-primary' onclick="increment_trip()">Increment Trip</button>
+        </div>
+        <div>
+            <button class='btn btn-primary' onclick="mqtt_publish()">Publish MQTT(Debug)</button>
         </div>
     </div>
     <table width="100%">
@@ -42,10 +45,13 @@
                         <a href="{% url 'index' %}">Dashboard</a>
                     </li>
                     <li>
-                        <a href="{% url 'admin:index' %}">Admin</a>
+                        <a href="{% url 'admin:index' %}">Django Admin</a>
                     </li>
                     <li>
                         <a href="{% url 'dash_admin' %}">Dashboard Admin</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'team_view' %}">Team View</a>
                     </li>
                 </ol>
             </div>
@@ -58,7 +64,7 @@
 </div>
 
 {% else %}
-<div class="alert alert-danger" role="alert">Error: Access Denied</div>
+<div class="alert alert-danger" role="alert">Error: Access Denied. Please login <a href="/admin">here</a></div>
 {% endif %}
 {% endblock %}
 {% block js %}
@@ -86,6 +92,29 @@
             }
         })
     };
+    function mqtt_publish() {
+        let topic = prompt("Topic Name")
+        let message = prompt("Message")
+        fetch(`{% url 'dash_admin' %}`, {
+            method: 'POST',
+            headers: {
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                },
+            credentials: 'same-origin',
+            body: JSON.stringify({
+                'data': `{"topic": "${topic}", "message": "${message}"}`,
+                'feature': "publish_mqtt"
+            })
+        })
+        .then(response=>response.json())
+        .then(result => {
+            if(result['status'] == 200) {
+                const alert = document.getElementById('alert')
+                alert.innerHTML = `${function1} completed successfully`
+                alert.style.display='block'
+            }
+        })
+    };        
     function admin(function1) {
         fetch(`/admin_view`, {
             method: 'POST',

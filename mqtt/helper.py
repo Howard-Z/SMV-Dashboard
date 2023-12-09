@@ -16,7 +16,7 @@ port = 1883
 client_id = f'subscribe-{random.randint(0, 100)}'
 username = 'smv'
 password = os.environ.get("MQTT_PW")
-def connect_mqtt() -> mqtt_client:
+def connect_mqtt(client_id=client_id) -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             MQTTError.objects.create(module='mqtt', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
@@ -54,3 +54,7 @@ def run():
     for topic in topics:
         subscribe(topic, client)
     client.loop_forever()
+
+def publish(topic, message):
+    client = connect_mqtt(client_id=f'subscribe-{random.randint(0, 1000)}')
+    client.publish(topic, message)

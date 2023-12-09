@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse
-from .helper import run
+from .helper import run, publish
 from .models import Trip
 import threading
 import json
 from datetime import datetime
 from django.shortcuts import HttpResponse
+import sys
 # Create your views here.
 
 def index(request):
@@ -21,12 +22,19 @@ def dash_admin(request):
             case "increment_trip":
                 Trip.objects.last().active = False
                 Trip.objects.create(name=data['data'], date_created=datetime.now(), active=True)
+            case "publish_mqtt":
+                data = json.loads(data['data'])
+                publish(topic=data['topic'], message=data['message'])
+
         return JsonResponse({"status": "200"})
     else:
         recent_trip = Trip.objects.last()
         return render(request, 'mqtt/dashboard_admin.html', {
-            "trip": recent_trip
+            "trip": recent_trip,
         })
+    
+def team_view(request):
+    pass
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", daemon=True)
 thread.start()
