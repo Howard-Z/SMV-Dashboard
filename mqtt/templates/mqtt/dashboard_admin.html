@@ -64,7 +64,22 @@
 </div>
 
 {% else %}
-<div class="alert alert-danger" role="alert">Error: Access Denied. Please login <a href="/admin">here</a></div>
+<div class="alert alert-danger" role="alert">Error: Access Denied. Please login. </div>
+<h2>Login</h2>
+{% if message %}
+<div class="alert alert-danger">{{ message }}</div>
+{% endif %}
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="password" name="password" placeholder="Password">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Login">
+</form> 
+<hr>
 {% endif %}
 {% endblock %}
 {% block js %}

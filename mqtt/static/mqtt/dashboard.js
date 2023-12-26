@@ -13,7 +13,7 @@ function battery_update(battery_level) {
 }
 //NEW: WebSocket
 const chatSocket = new WebSocket(
-    'wss://'
+    'ws://'
     + window.location.host
     + '/ws/dashboard'
 );

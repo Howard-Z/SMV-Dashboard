@@ -10,7 +10,7 @@ import os
 
 LOCATION = [0,0,0]
 
-broker = '10.147.17.93'
+broker = '128.97.3.48'
 port = 1883
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
@@ -42,6 +42,7 @@ def store(msg):
     if str(msg.topic) in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
         #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
         async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
+
 
 def subscribe(topic, client: mqtt_client):
     def on_message(client, userdata, msg):
