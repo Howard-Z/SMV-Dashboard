@@ -7,10 +7,14 @@ from .topics import topics_list as topics
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import os
+import sys
+
+sys.path.append('..')
+from smvDashboard.settings import ip_address
 
 LOCATION = [0,0,0]
 
-broker = '128.97.3.48'
+broker = ip_address
 port = 1883
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'

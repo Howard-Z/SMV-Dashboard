@@ -17,7 +17,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+ip_address = "10.147.17.93" if DEBUG else "192.168.1.119"
 
 #Sentry: Error Logging
 sentry_sdk.init(
@@ -103,7 +104,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': os.environ.get("POSTGRES_PW"),
-        'HOST': '128.97.3.48',
+        'HOST': f'{ip_address}',
         'PORT': '5432',
         'OPTIONS': {'sslmode': 'prefer'},
     },
@@ -167,12 +168,11 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-ip_address = ['10.147.17.93' if DEBUG else '192.168.1.119']
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(f"redis://{ip_address}:6379")],
+            "hosts": [(f"{ip_address}", "6379")],
         },
     },
 }

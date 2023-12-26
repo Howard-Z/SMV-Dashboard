@@ -12,11 +12,21 @@ function battery_update(battery_level) {
     } 
 }
 //NEW: WebSocket
-const chatSocket = new WebSocket(
-    'ws://'
-    + window.location.host
-    + '/ws/dashboard'
-);
+const chatSocket = 0;
+if (window.location.protocol == "https:") {
+    chatSocket = new WebSocket(
+        'wss://'
+        + window.location.host
+        + '/ws/dashboard'
+    );
+} else {
+    chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/dashboard'
+    );
+}
+
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
