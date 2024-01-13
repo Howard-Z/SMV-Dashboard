@@ -21,7 +21,9 @@ topics_list = {
     },
         "/Bear_1/Throttle": {
         "name": "bear1.throttle",
-        "model": ThrottleData
+        "model": ThrottleData,
+        "max": 100,
+        "min": 0
         #error above 1028: check teensy output range
     },
     "/Bear_1/Brake": {
@@ -113,7 +115,7 @@ topics_list = {
     #DAQMessage
     "/DAQ/Speed": {
         "name": "daq.speed",
-        "model": SpeedData
+        "model": SpeedData,
     },
     "/DAQ/Longitude": {
         "name": "daq.longitude",

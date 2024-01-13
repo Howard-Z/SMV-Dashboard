@@ -53,6 +53,12 @@
                     <li>
                         <a href="{% url 'team_view' %}">Team View</a>
                     </li>
+                    <li>
+                        <a href="{% url 'map' %}">Map (Under Development)</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'chart' %}">Chart (Under Development)</a>
+                    </li>
                 </ol>
             </div>
             
@@ -130,25 +136,5 @@
             }
         })
     };        
-    function admin(function1) {
-        fetch(`/admin_view`, {
-            method: 'POST',
-            headers: {
-                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
-                },
-            credentials: 'same-origin',
-            body: JSON.stringify({
-                'function': `${function1}`
-            })
-        })
-        .then(response=>response.json())
-        .then(result => {
-            if(result['status'] == 200) {
-                const alert = document.getElementById('alert')
-                alert.innerHTML = `${function1} completed successfully`
-                alert.style.display='block'
-            }
-        })
-    }
 </script>
 {% endblock %}

@@ -12,7 +12,7 @@ function battery_update(battery_level) {
     } 
 }
 //NEW: WebSocket
-const chatSocket = 0;
+let chatSocket = 0;
 if (window.location.protocol == "https:") {
     chatSocket = new WebSocket(
         'wss://'
@@ -34,7 +34,7 @@ chatSocket.onmessage = function(e) {
         case 'daq.speed':
             //Speed Data
             mph = data['content']
-            document.getElementById("center_gauge").innerHTML = `${mph} mph`
+            document.getElementById("center_gauge").innerHTML = `${Math.round(mph)} mph`
             break;
         case 'power_control.energy':
             //Battery Data

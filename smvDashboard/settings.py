@@ -18,7 +18,8 @@ from dotenv import load_dotenv
 load_dotenv()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ip_address = "10.147.17.93" if DEBUG else "192.168.1.119"
+
+ip_address = "10.147.17.93" if DEBUG else "192.168.1.119" #internal or zerotier IPs based on production status
 
 #Sentry: Error Logging
 sentry_sdk.init(
@@ -44,7 +45,6 @@ ALLOWED_HOSTS_TYPES = {
      "prod":
     ['smv.seas.ucla.edu', '10.147.17.52', '127.0.0.1'], 
 }
-
 
 ALLOWED_HOSTS = ALLOWED_HOSTS_TYPES['dev' if DEBUG else 'prod']
 

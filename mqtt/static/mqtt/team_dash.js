@@ -27,19 +27,28 @@ function refresh() {
 
 
 //NEW: WebSocket
-const chatSocket = new WebSocket(
-    'ws://'
-    + window.location.host
-    + '/ws/team_dash'
-);
+let chatSocket = 0;
+if (window.location.protocol == "https:") {
+    chatSocket = new WebSocket(
+        'wss://'
+        + window.location.host
+        + '/ws/dashboard'
+    );
+} else {
+    chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/dashboard'
+    );
+}
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     switch (data['module']) {
         case 'daq.speed':
             //Speed Data
-            kmh = data['content']
-            screenUpdate()
+            x_time.push(Date().getTime());
+            y_time.push(data['content'])
             break;
         case 'power_control.energy':
             //Battery Data

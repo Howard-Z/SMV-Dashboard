@@ -5,8 +5,6 @@ from .models import Trip
 import threading
 import json
 from datetime import datetime
-from django.shortcuts import HttpResponse
-import sys
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -17,8 +15,10 @@ def index(request):
     return render(request, 'mqtt/dashboard.html')
 
 def map(request):
+    #temp map view 
     return render(request, 'mqtt/map.html')
-
+def chart(request):
+    return render(request, 'mqtt/chart.html')
 def dash_admin(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -29,7 +29,6 @@ def dash_admin(request):
             case "publish_mqtt":
                 data = json.loads(data['data'])
                 publish(topic=data['topic'], message=data['message'])
-
         return JsonResponse({"status": "200"})
     else:
         recent_trip = Trip.objects.last()
@@ -38,7 +37,9 @@ def dash_admin(request):
         })
     
 def team_view(request):
-    pass
+    return render(request, 'mqtt/team_dash.html')
+
+
 def login_view(request):
     if request.method == "POST":
         # Attempt to sign user in
@@ -56,6 +57,7 @@ def login_view(request):
             })
     else:
         raise Http404
+    
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", daemon=True)
 thread.start()
