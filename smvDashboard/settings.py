@@ -19,7 +19,11 @@ load_dotenv()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ip_address = "10.147.17.93" if DEBUG else "192.168.1.119" #internal or zerotier IPs based on production status
+#IP ADDRESS CONFIG
+ZEROTIER = False #alternate to campus VPN
+ip_address = "128.97.3.48" if DEBUG else "192.168.1.119" #internal or zerotier IPs based on production status
+if ZEROTIER:
+    ip_address = "10.147.17.93" 
 
 #Sentry: Error Logging
 sentry_sdk.init(

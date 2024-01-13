@@ -15,8 +15,9 @@ SMV Map
 {% endblock %}
 
 {% block js %}
+<script src="{% static 'mqtt/team_dash.js' %}"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', () => {
         var map = L.map('map', {
      center: [34.0699, -118.4438], //set to UCLA
@@ -52,6 +53,14 @@ SMV Map
     setInterval(refresh, 3000)
     })
 
+/*****************
+GEOLOCATION FUNCTION
+******************/
+function success(geolocation) {
+    latlngs.push([geolocation.coords.latitude, geolocation.coords.longitude])
+    var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
 
-</script>
+}
+watchPosition(success)
+</script> -->
 {% endblock %}

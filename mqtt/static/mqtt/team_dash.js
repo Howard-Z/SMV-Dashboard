@@ -1,31 +1,49 @@
-var map = L.map('map', {
-center: [34.0699, -118.4438], //set to UCLA
-zoom: 15
-});
-//do not modify tile layer
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-//marker test: diddy riese
-var marker = L.marker([34.0631, -118.4469]).addTo(map);
-// create a red polyline from an array of LatLng points. ref https://leafletjs.com/reference.html#polyline
-    // async refresh speed every 0.5 second
-latlngs = [34.0631, -118.4469];
-var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+/*****************
+MAP FUNCTION
+******************/
+document.addEventListener('DOMContentLoaded', () => {
 
-// zoom the map to the polyline
-map.fitBounds(polyline.getBounds());
+    //Intialize Map
+    var map = L.map('map', {
+        center: [34.0699, -118.4438], //set to UCLA
+        zoom: 15
+    });
 
-function refresh() {
-    fetch('/ajax_location')
-    .then(response => response.json())
-    .then(result => {
-        polyline.addLatLng(L.latLng(result['lat'], result['long']));
-})}
+    //OSM Map tiles
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    //Get Current Location to intialize line
+    navigator.geolocation.getCurrentPosition(success1)
+    var polyline;
+    function success1(geolocation) {
+        latlngs = [geolocation.coords.latitude, geolocation.coords.longitude]
+        // latlngs = [34.0631, -118.4469]; //This is for testing the line functionality
+        polyline = L.polyline([latlngs], {color: 'red'}).addTo(map);
+    
+        // zoom the map to the polyline
+        map.fitBounds(polyline.getBounds());
+    }
 
 
+    /*****************
+    GEOLOCATION FUNCTION
+    ******************/
+    function success(geolocation) {
+        polyline.addLatLng([geolocation.coords.latitude, geolocation.coords.longitude]);
+        map.fitBounds(polyline.getBounds()); //zoom to fit
+        //ADD: push location back up to Django, confirm
+    }
+    navigator.geolocation.watchPosition(success)
 
+})
+
+
+/*****************
+WEBSOCKET FUNCTION
+******************/
 //NEW: WebSocket
 let chatSocket = 0;
 if (window.location.protocol == "https:") {
