@@ -1,5 +1,5 @@
 import json
-from .models import MQTTError, Trip
+from .models import MQTTError, Trip, Location
 from datetime import datetime
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
@@ -26,10 +26,8 @@ class DashboardConsumer(WebsocketConsumer):
         MQTTError.objects.create(module='ws', event='disconnect', message='disconnected', error=False, time=datetime.now(), trip=Trip.objects.last())
 
     def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
+        print(text_data)
 
-        self.send(text_data=json.dumps({"message": message}))
     def data_notif(self, event):
         self.send(text_data=json.dumps({
                 'type': 'data.notif',
@@ -60,9 +58,9 @@ class TeamConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-
-        self.send(text_data=json.dumps({"message": message}))
+        lat = text_data_json["lat"]
+        long = text_data_json["long"]
+        Location.objects.create(longitude=long, latitude=lat, trip=Trip.objects.last(), date=datetime.now())
     def team_notif(self, event):
         self.send(text_data=json.dumps({
                 'type': 'team.notif',

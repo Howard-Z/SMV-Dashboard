@@ -24,8 +24,9 @@ def dash_admin(request):
         data = json.loads(request.body)
         match data['feature']:
             case "increment_trip":
-                Trip.objects.last().active = False
-                Trip.objects.create(name=data['data'], date_created=datetime.now(), active=True)
+                if data['data'] is not None:
+                    Trip.objects.last().active = False
+                    Trip.objects.create(name=data['data'], date_created=datetime.now(), active=True)
             case "publish_mqtt":
                 data = json.loads(data['data'])
                 publish(topic=data['topic'], message=data['message'])

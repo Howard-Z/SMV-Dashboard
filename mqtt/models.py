@@ -19,7 +19,7 @@ class SpeedData(models.Model):
 class Location(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
     longitude = models.DecimalField(max_digits=11, decimal_places=7)
-    longitude = models.DecimalField(max_digits=11, decimal_places=7)
+    latitude = models.DecimalField(max_digits=11, decimal_places=7)
     date = models.DateTimeField()
     class Meta:
         verbose_name_plural = " Location Data" 
