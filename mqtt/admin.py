@@ -6,7 +6,9 @@ from .models import EnergyData, T1Data, T2Data, T3Data, Switch_EncodingData, S_E
 class MessageHistoryAdmin(admin.ModelAdmin):
     list_display = ("id", "topic", "date", "trip")
 class MQTTErrorAdmin(admin.ModelAdmin):
-    list_display = ("trip", "module", "event", "time")
+    list_display = ("trip", "module", "event", "time", "error")
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ("id", "trip", "date", "latitude", "longitude")
 # Register your models here.
 admin.site.register(MQTTError, MQTTErrorAdmin)
 admin.site.register(EnergyData)
@@ -27,7 +29,7 @@ admin.site.register(VoltageData)
 admin.site.register(PowerData)
 admin.site.register(P_Error_StatusData)
 admin.site.register(MessageHistory, MessageHistoryAdmin)
-admin.site.register(Location)
+admin.site.register(Location, LocationAdmin)
 admin.site.register(Trip)
 admin.site.register(SpeedData)
 

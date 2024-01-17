@@ -19,12 +19,18 @@ load_dotenv()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#IP ADDRESS CONFIG
+ZEROTIER = True #alternate to campus VPN
+ip_address = "128.97.3.48" if DEBUG else "192.168.1.119" #internal or zerotier IPs based on production status
+if ZEROTIER:
+    ip_address = "10.147.17.93" 
+
+#Sentry: Error Logging
 sentry_sdk.init(
     dsn="https://8c2277f2745be76cc3c8f9b1fb3afd3b@o1217115.ingest.sentry.io/4506261170356224",
     traces_sample_rate=1.0,
     profiles_sample_rate=1.0,
     environment=f"{'development' if DEBUG else 'production'}",
-
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,9 +47,8 @@ ALLOWED_HOSTS_TYPES = {
     "dev":
     ['localhost'], 
      "prod":
-    ['smv.seas.ucla.edu'], 
+    ['smv.seas.ucla.edu', '10.147.17.52', '127.0.0.1'], 
 }
-
 
 ALLOWED_HOSTS = ALLOWED_HOSTS_TYPES['dev' if DEBUG else 'prod']
 
@@ -103,7 +108,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': os.environ.get("POSTGRES_PW"),
-        'HOST': '10.147.17.93',
+        'HOST': f'{ip_address}',
         'PORT': '5432',
         'OPTIONS': {'sslmode': 'prefer'},
     },
@@ -167,14 +172,13 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("10.147.17.93", 6379)],
+            "hosts": [(f"{ip_address}", "6379")],
         },
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ['http://10.147.17.52', 'https://smv.seas.ucla.edu']
+CSRF_TRUSTED_ORIGINS = ['https://smv.seas.ucla.edu']

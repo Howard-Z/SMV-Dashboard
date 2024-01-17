@@ -1,26 +1,32 @@
 import random
 from paho.mqtt import client as mqtt_client
-from .models import MessageHistory, Trip, MQTTError
+from .models import Trip, MQTTError
 from datetime import datetime
-import time
 from .topics import topics_list as topics
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import os
+import sys
+
+sys.path.append('..')
+from smvDashboard.settings import ip_address
 
 LOCATION = [0,0,0]
 
-broker = '10.147.17.93'
+broker = ip_address
 port = 1883
+
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
 username = 'smv'
 password = os.environ.get("MQTT_PW")
-def connect_mqtt() -> mqtt_client:
+
+def connect_mqtt(client_id=client_id) -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             MQTTError.objects.create(module='mqtt', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
         else:
+            #error state
             MQTTError.objects.create(module='mqtt', event='connect', message=f"Failed to connect, return code {rc}, client: {client}\n", error=True, time=datetime.now(), trip=Trip.objects.last())
     client = mqtt_client.Client(client_id)
     client.username_pw_set(username, password)
@@ -30,18 +36,38 @@ def connect_mqtt() -> mqtt_client:
 
 def store(msg):
     channel_layer = get_channel_layer()
-    #update associated model
-    topics[msg.topic]['model'].objects.create(date=datetime.now(), data=int(msg.payload.decode()), trip=Trip.objects.last()) 
+    try:
+        #1. Compare msg value. Is it in bounds of min/max?
+        payload = round(abs(float(msg.payload.decode())), 3) #absolute value of input, rounded to 3 decimal places
+        if round(float(msg.payload.decode()), 3) > 999.000 or round(float(msg.payload.decode()), 3) < 0:
+            #if out of bounds(needs to be [0, 999.000))
+            MQTTError.objects.create(module='mqtt', event='receive', message=f'Invalid Argument {payload}', error=True, time=datetime.now(), trip=Trip.objects.last())
+        else:
+            #error is false unless specifically set
+            error = False
+            if "max" in topics[msg.topic]:
+                #only error handle if max is defined in topics.py
+                if not topics[msg.topic]['max'] >= payload and topics[msg.topic]['min'] <= payload:
+                    #if payload not in range, error
+                    error = True
+                    if msg.topic not in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
+                        #send all errors to dashboard websocket
+                        async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
+            #update associated model
+            topics[msg.topic]['model'].objects.create(date=datetime.now(), data=payload, trip=Trip.objects.last()) 
+            if str(msg.topic) == "/DAQ/Latitude" and str(msg.topic) == "/DAQ/Longitude":
+                #do NOT deal with long/lat here. need to implement separate feature to store it
+                pass
+            else:
+                #send to team view always, except for lat/long data
+                async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
+            if str(msg.topic) in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
+                #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
+                async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
+    except Exception as e:
+        #on error, pass. log error in MQTT Error Log
+        MQTTError.objects.create(module='mqtt', event='receive', message=f'{e}', error=True, time=datetime.now(), trip=Trip.objects.last())
 
-    if str(msg.topic) != "/DAQ/Latitude" and str(msg.topic) != "/DAQ/Longitude":
-        #do NOT deal with long/lat here. need to implement separate feature to store it
-        pass
-    else:
-        #send to team view always, except for lat/long data
-        async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
-    if str(msg.topic) in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
-        #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
-        async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": int(msg.payload.decode()), "error": False})
 
 def subscribe(topic, client: mqtt_client):
     def on_message(client, userdata, msg):
@@ -54,3 +80,7 @@ def run():
     for topic in topics:
         subscribe(topic, client)
     client.loop_forever()
+
+def publish(topic, message):
+    client = connect_mqtt(client_id=f'subscribe-{random.randint(0, 1000)}')
+    client.publish(topic, message)

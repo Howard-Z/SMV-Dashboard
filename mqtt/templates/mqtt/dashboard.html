@@ -1,10 +1,9 @@
 {% extends 'mqtt/index.html' %}
 {% load static %}
+{% block title %}SMV Dashboard{% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'mqtt/styles.css' %}">
-<style>
 
-</style>
 {% endblock %}
 {% block body %}
   <div class="container" id="center_gauge" style="width: 40%; height: 50%; left: 29.6%; top: 24.8%; position: absolute;font-size: 100px;text-align: center;vertical-align: middle;">0 mph</div>
