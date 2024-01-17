@@ -35,35 +35,35 @@ topics_list = {
     },    
     #bear_2
     "/Bear_2/RPM": {
-        "name": "bear1.rpm",
+        "name": "bear2.rpm",
         "model": RPMData
     },
     "/Bear_2/RPM": {
-        "name": "bear1.motor_state",
+        "name": "bear2.motor_state",
         "model": Motor_StateData
     },
     
     "/Bear_2/Cruise": {
-        "name": "bear1.cruise",
+        "name": "bear2.cruise",
         "model": CruiseData
     },
     "/Bear_2/M_Error_Status": {
-        "name": "bear1.m_error_status",
+        "name": "bear2.m_error_status",
         "model": M_Error_StatusData
         #error 1, check
 
     },
 
     "/Bear_2/Throttle": {
-        "name": "bear1.throttle",
+        "name": "bear2.throttle",
         "model": ThrottleData
     },
     "/Bear_2/Brake": {
-        "name": "bear1.brake",
+        "name": "bear2.brake",
         "model": BrakeData
     },
     "/Bear_2/Meter_Count": {
-        "name": "bear1.meter_count",
+        "name": "bear2.meter_count",
         "model": Meter_CountData
     },
     #power_control
