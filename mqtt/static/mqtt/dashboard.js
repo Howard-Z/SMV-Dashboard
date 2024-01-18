@@ -42,6 +42,12 @@ chatSocket.onmessage = function(e) {
             break;
         //implement rest of the cases for all dashboard modules
         default:
+            //error handling
+            if (data['error']) {
+                document.getElementById(data['module']).style.display='block'
+            } else {
+                document.getElementById(data['module']).style.display='none'
+            }
             break;
 
     }
