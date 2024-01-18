@@ -44,14 +44,12 @@ chatSocket.onmessage = function(e) {
             break;
         //implement rest of the cases for all dashboard modules
         default:
-            //error handling here
-            //if data['error'] is error
-                //make the element with id=data['module'] visible
-                document.getElementById('id').style.display ='block'
-            //else
-                //hide object
-                document.getElementById('id').style.display ='none'
-
+            //error handling
+            if (data['error']) {
+                document.getElementById(data['module']).style.display='block'
+            } else {
+                document.getElementById(data['module']).style.display='none'
+            }
             break;
 
     }
