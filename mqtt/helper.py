@@ -28,6 +28,7 @@ def connect_mqtt(client_id=client_id) -> mqtt_client:
         else:
             #error state
             MQTTError.objects.create(module='mqtt', event='connect', message=f"Failed to connect, return code {rc}, client: {client}\n", error=True, time=datetime.now(), trip=Trip.objects.last())
+            return None
     client = mqtt_client.Client(client_id)
     client.username_pw_set(username, password)
     client.on_connect = on_connect
@@ -78,11 +79,13 @@ def subscribe(topic, client: mqtt_client):
     client.on_message = on_message
 
 def run():
-    global CLIENT
-    CLIENT = connect_mqtt()
-    for topic in topics:
-        subscribe(topic, CLIENT)
-    CLIENT.loop_start()
+    client = connect_mqtt()
+    if client:
+        for topic in topics:
+            subscribe(topic, client)
+        client.loop_forever()
+    else:
+        run()
 
 def publish(topic, message):
     client = connect_mqtt(client_id=f'subscribe-{random.randint(0, 1000)}')
