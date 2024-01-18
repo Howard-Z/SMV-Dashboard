@@ -35,7 +35,7 @@ topics_list = {
         "name": "bear1.meter_count",
         "model": Meter_CountData
     },    
-    #bear_2
+#bear_2
     "/Bear_2/RPM": {
         "name": "bear2.rpm",
         "model": RPMData
@@ -44,7 +44,7 @@ topics_list = {
         "name": "bear2.motor_state",
         "model": Motor_StateData
     },
-    
+
     "/Bear_2/Cruise": {
         "name": "bear2.cruise",
         "model": CruiseData
