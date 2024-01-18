@@ -1,5 +1,5 @@
 //defining chart myChart, init empty
-const ctx = document.getElementById('myChart');
+const ctx = document.getElementById('daq.speed');
 let chart = new Chart(ctx, {
     type: 'line',
     data: {
