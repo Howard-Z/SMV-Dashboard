@@ -24,6 +24,8 @@ class DashboardConsumer(WebsocketConsumer):
             'speed',
             self.channel_name
         )
+        print("CLOSING")
+        print(close_code)
         MQTTError.objects.create(module='ws', event='disconnect', message='disconnected', error=False, time=datetime.now(), trip=Trip.objects.last())
 
     def receive(self, text_data):
