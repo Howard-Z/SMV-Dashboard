@@ -8,7 +8,7 @@
 <!--Tab links -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
    <li class="nav-item" role="presentation">
-     <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+     <button class="nav-link active" id="DAQMsg-tab" data-bs-toggle="tab" data-bs-target="#DAQMsg" type="button" role="tab" aria-controls="DAQMsg" aria-selected="true">DAQ Message</button>
    </li>
    <li class="nav-item" role="presentation">
      <button class="nav-link" id="bear1-tab" data-bs-toggle="tab" data-bs-target="#bear1" type="button" role="tab" aria-controls="bear1" aria-selected="false">Bear 1</button>
@@ -23,15 +23,24 @@
      <button class="nav-link" id="steering-tab" data-bs-toggle="tab" data-bs-target="#pwrctrl" type="button" role="tab" aria-controls="steering" aria-selected="false">Steering</button>
    </li>
   </ul>
+
+  <!--tab content-->
  <div class="tab-content" id="myTabContent">
-   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-     <h1>This is a Heading</h1>
+   <div class="tab-pane fade show active" id="DAQMsg" role="tabpanel" aria-labelledby="DAQMsg-tab">
+     <h1>This is a Heading hello</h1>
      <p>This is a paragraph</p>
-
-
+     <div>
+        <canvas id="daq.speed"></canvas>
+     </div>
+      <p> Longitude + latitude data here</p>
    </div>
-   <div class="tab-pane fade" id="bear1" role="tabpanel" aria-labelledby="bear1-tab">
+
+  <div class="tab-pane fade" id="bear1" role="tabpanel" aria-labelledby="bear1-tab">
      <h2>RPM Data</h2>
+     <div>
+      <canvas id="bear1.rpm"></canvas>
+   </div>
+
      <h2>Motor State</h2>
      <h2>Cruise Data</h2>
      <h2>Error Status</h2>
@@ -72,6 +81,9 @@
 
 
 {% block js %}
-<script src="{% static 'mqtt/team_dash.js' %}"></script>
+
+<!-- <script src="{% static 'mqtt/team_dash.js' %}"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'mqtt/chart.js' %}"></script>
 {% endblock %}
 
