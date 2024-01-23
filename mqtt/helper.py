@@ -15,7 +15,7 @@ LOCATION = [0,0,0]
 
 broker = ip_address
 port = 1883
-
+global CLIENT
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
 username = 'smv'
@@ -28,6 +28,7 @@ def connect_mqtt(client_id=client_id) -> mqtt_client:
         else:
             #error state
             MQTTError.objects.create(module='mqtt', event='connect', message=f"Failed to connect, return code {rc}, client: {client}\n", error=True, time=datetime.now(), trip=Trip.objects.last())
+            return None
     client = mqtt_client.Client(client_id)
     client.username_pw_set(username, password)
     client.on_connect = on_connect
@@ -53,6 +54,8 @@ def store(msg):
                     if msg.topic not in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
                         #send all errors to dashboard websocket
                         async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
+            MQTTError.objects.create(module='mqtt', event='receive', message=f'{payload}', error=error, time=datetime.now(), trip=Trip.objects.last())
+            print(payload)
             #update associated model
             topics[msg.topic]['model'].objects.create(date=datetime.now(), data=payload, trip=Trip.objects.last()) 
             if str(msg.topic) == "/DAQ/Latitude" and str(msg.topic) == "/DAQ/Longitude":
@@ -77,10 +80,21 @@ def subscribe(topic, client: mqtt_client):
 
 def run():
     client = connect_mqtt()
-    for topic in topics:
-        subscribe(topic, client)
-    client.loop_forever()
+    if client:
+        for topic in topics:
+            subscribe(topic, client)
+        client.loop_forever()
+    else:
+        run()
 
 def publish(topic, message):
     client = connect_mqtt(client_id=f'subscribe-{random.randint(0, 1000)}')
     client.publish(topic, message)
+
+def send_location(lat, long):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"daq.location", "content": {"lat": lat, "long": long}, "error": False})
+
+def test_senddata(channel, module, content, type1):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(channel, {"type": type1, "module": module, "content": content, "error": False})

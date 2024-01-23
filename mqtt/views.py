@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse, Http404
-from .helper import run, publish
+from .helper import run, publish, test_senddata
 from .models import Trip
 import threading
 import json
@@ -11,6 +11,7 @@ from django.urls import reverse
 
 # Create your views here.
 
+#THOUGHTS: limit to smvdriver user to prevent accidental location interference
 def index(request):
     return render(request, 'mqtt/dashboard.html')
 
@@ -30,6 +31,10 @@ def dash_admin(request):
             case "publish_mqtt":
                 data = json.loads(data['data'])
                 publish(topic=data['topic'], message=data['message'])
+            case "test_websocket":
+                data = json.loads(data['data'])
+                print(data)
+                test_senddata(data['channel'], data['module'], data['content'], data['type1'])
         return JsonResponse({"status": "200"})
     else:
         recent_trip = Trip.objects.last()
