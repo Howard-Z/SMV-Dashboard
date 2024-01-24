@@ -5,37 +5,41 @@ topics_list = {
     "/Bear_1/RPM": {
         "name": "bear1.rpm",
         "model": RPMData
+        #chart
     },
         "/Bear_1/Motor_State": {
         "name": "bear1.motor_state",
         "model": Motor_StateData
+        #io
     },
         "/Bear_1/Cruise": {
         "name": "bear1.cruise",
         "model": CruiseData
+        #ignore
     },
         "/Bear_1/M_Error_Status": {
         "name": "bear1.m_error_status",
         "model": M_Error_StatusData
-        #error 1, check
+        #error 1, check, io
     },
         "/Bear_1/Throttle": {
         "name": "bear1.throttle",
         "model": ThrottleData,
         "max": 100,
         "min": 0
-        #error above 1028: check teensy output range
+        #error above 1028: check teensy output range, ignore
     },
     "/Bear_1/Brake": {
         "name": "bear1.brake",
         "model": BrakeData
-        #check back
+        #check back, ignore
     },
     "/Bear_1/Meter_Count": {
         "name": "bear1.meter_count",
         "model": Meter_CountData
+        #ignore
     },    
-    #bear_2
+#bear_2
     "/Bear_2/RPM": {
         "name": "bear2.rpm",
         "model": RPMData
@@ -44,7 +48,7 @@ topics_list = {
         "name": "bear2.motor_state",
         "model": Motor_StateData
     },
-    
+
     "/Bear_2/Cruise": {
         "name": "bear2.cruise",
         "model": CruiseData
@@ -104,13 +108,10 @@ topics_list = {
         "model": P_Error_StatusData
     },
     #Steering
-    "/Steering_Wheel/Switch_Encoding": {
-        "name": "steering_wheel.switch_encoding",
-        "model": Switch_EncodingData
-    },
     "/Steering_Wheel/S_Error_Status": {
         "name": "steering_wheel.s_error_status",
         "model": S_Error_StatusData
+        #io
     },
     #DAQMessage
     "/DAQ/Speed": {

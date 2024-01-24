@@ -8,17 +8,17 @@
 {% block body %}
   <div class="container" id="center_gauge" style="width: 40%; height: 50%; left: 29.6%; top: 24.8%; position: absolute;font-size: 100px;text-align: center;vertical-align: middle;">0 mph</div>
   <div style="width: 15%; height: 50%; left: 7%; top: 24.8%; position: absolute;"></div>
-  <div id="bear2.m_error_status" style="width: 5%;  left: 88.6%; top: 9.6%; position: absolute;"><img src="{% static 'mqtt/motor2_error_symbol.png' %}" height="100%" width="100%"></div>
-  <div id="bear1.m_error_status" style="width: 5%;  left: 77%; top: 9.6%; position: absolute;"><img src="{% static 'mqtt/motor1_error_symbol.png' %}" height="100%" width="100%"></div>
-  <div id="bear1.throttle" style="width: 5%;  left: 88.6%; top: 27.2%; position: absolute;"><img src="{% static 'mqtt/throttle_error_symbol.png' %}" height="100%" width="100%"></div>
-  <div id="bear1.brake" style="width: 5%;  left: 77%; top: 27.2%; position: absolute;"><img src="{% static 'mqtt/brake_error_symbol.png' %}" height="100%" width="100%"></div>
-  <div id="power_control.p_error_status" style="width: 5%;  left: 88.6%; top: 44.8%; position: absolute;"><img src="{% static 'mqtt/power_error_symbol.png' %}" height="100%" width="100%"></div>
-  <div id="steering_wheel.s_error_status" style="width: 5%;  left: 77%; top: 44.8%; position: absolute;"><img src="{% static 'mqtt/steering_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="bear2.m_error_status" style="width: 5%; height: 10%; left: 88.6%; top: 9.6%; position: absolute;"><img src="{% static 'mqtt/motor2_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="bear1.m_error_status" style="width: 5%; height: 10%; left: 77%; top: 9.6%; position: absolute;"><img src="{% static 'mqtt/motor1_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="bear1.throttle" style="width: 5%; height: 10%; left: 88.6%; top: 27.2%; position: absolute;"><img src="{% static 'mqtt/throttle_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="bear1.brake" style="width: 5%; height: 10%; left: 77%; top: 27.2%; position: absolute;"><img src="{% static 'mqtt/brake_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="power_control.p_error_status" style="width: 5%; height: 10%; left: 88.6%; top: 44.8%; position: absolute;"><img src="{% static 'mqtt/power_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="steering_wheel.s_error_status" style="width: 5%; height: 10%; left: 77%; top: 44.8%; position: absolute;"><img src="{% static 'mqtt/steering_error_symbol.png' %}" height="100%" width="100%"></div>
   <!-- don't know if getting temperature data -->
-  <div id="temperature" style="width: 5%;  left: 88.6%; top: 80%; position: absolute;"><img src="{% static 'mqtt/temp_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="temperature" style="width: 5%; height: 10%; left: 88.6%; top: 80%; position: absolute;"><img src="{% static 'mqtt/temp_error_symbol.png' %}" height="100%" width="100%"></div>
   <div style="width: 5%; height: 10%; left: 77%; top: 80%; position: absolute;"></div>
-  <div id="power_control.voltage" style="width: 5%;  left: 88.6%; top: 62.4%; position: absolute;"><img src="{% static 'mqtt/voltage_error_symbol.png' %}" height="100%" width="100%"></div>
-  <div id="power_control.current" style="width: 5%;  left: 77%; top: 62.4%; position: absolute;"><img src="{% static 'mqtt/current_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="power_control.voltage" style="width: 5%; height: 10%; left: 88.6%; top: 62.4%; position: absolute;"><img src="{% static 'mqtt/voltage_error_symbol.png' %}" height="100%" width="100%"></div>
+  <div id="power_control.current" style="width: 5%; height: 10%; left: 77%; top: 62.4%; position: absolute;"><img src="{% static 'mqtt/current_error_symbol.png' %}" height="100%" width="100%"></div>
 {% endblock %}
 
 {% block js %}

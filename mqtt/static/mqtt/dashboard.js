@@ -54,9 +54,13 @@ chatSocket.onmessage = function(e) {
 
     }
 };
-
+chatSocket.onerror = function(evt) {
+    console.log(evt)
+}
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
+    console.error(e)
+    self.close(e)
     const chatSocket = new WebSocket(
         'ws://'
         + window.location.host
