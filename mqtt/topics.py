@@ -108,6 +108,11 @@ topics_list = {
         "model": P_Error_StatusData
     },
     #Steering
+    "/Steering_Wheel/Switch_Encoding": {
+        "name": "steering_wheel.switch_encoding",
+        "model": Switch_EncodingData
+        #ignore
+    },
     "/Steering_Wheel/S_Error_Status": {
         "name": "steering_wheel.s_error_status",
         "model": S_Error_StatusData
