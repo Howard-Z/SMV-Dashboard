@@ -24,7 +24,6 @@ ZEROTIER = True #alternate to campus VPN
 ip_address = "128.97.3.48" if DEBUG else "192.168.1.119" #internal or zerotier IPs based on production status
 if ZEROTIER:
     ip_address = "10.147.17.93" 
-
 #Sentry: Error Logging
 sentry_sdk.init(
     dsn="https://8c2277f2745be76cc3c8f9b1fb3afd3b@o1217115.ingest.sentry.io/4506261170356224",
