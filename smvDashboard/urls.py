@@ -23,7 +23,7 @@ admin.site.site_title  =  "SMV Admin Dashboard"
 admin.site.index_title  =  "Car Data"
 
 def redirect_home(request):
-    return redirect(reverse('index'))
+    return redirect(reverse('dash_admin'))
 
 urlpatterns = [
     path('', redirect_home),

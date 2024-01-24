@@ -13,6 +13,7 @@ topics_list = {
         "/Bear_1/Cruise": {
         "name": "bear1.cruise",
         "model": CruiseData
+        #ignore
     },
         "/Bear_1/M_Error_Status": {
         "name": "bear1.m_error_status",
@@ -24,12 +25,12 @@ topics_list = {
         "model": ThrottleData,
         "max": 100,
         "min": 0
-        #error above 1028: check teensy output range
+        #error above 1028: check teensy output range, ignore
     },
     "/Bear_1/Brake": {
         "name": "bear1.brake",
         "model": BrakeData
-        #check back
+        #check back, ignore
     },
     "/Bear_1/Meter_Count": {
         "name": "bear1.meter_count",
@@ -107,6 +108,7 @@ topics_list = {
     "/Steering_Wheel/Switch_Encoding": {
         "name": "steering_wheel.switch_encoding",
         "model": Switch_EncodingData
+        #ignore
     },
     "/Steering_Wheel/S_Error_Status": {
         "name": "steering_wheel.s_error_status",
