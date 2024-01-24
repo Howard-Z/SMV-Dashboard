@@ -59,12 +59,12 @@ let bear1Rpm = new Chart(document.getElementById('bear1.rpm'), {
   });
 
 //add data to chart with label(x) and newData(y)
-function addData(chart, label, newData) {
+function addData(label, newData, module) {
     chart.data.labels.push(label);
     chart.data.datasets.forEach((dataset) => {
         dataset.data.push(newData);
     });
-    chart.update('none');
+    chart.update('module');
 }
 
 //NEW: WebSocket
@@ -89,7 +89,7 @@ chatSocket.onmessage = function(e) {
         case 'daq.speed':
             date = new Date()
             //Speed Data
-            addData(chart, date.getTime(), data['content'])
+            addData(time, date.getTime(), data['daq.speed'])
             break;
         case 'power_control.energy':
             //Battery Data
