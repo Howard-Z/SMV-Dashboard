@@ -9,4 +9,4 @@ Site Paths:
 - /admin: admin console
 - /static: static files, served via Apache
 - /ws: websocket, served via daphne
-[Notion Link] (https://www.notion.so/matthewtsai/57c1ed5ef802477a9a5b9c2ce18886ef?v=d6d9acbf4d27457c8b4f7948b3179b13&pvs=4)
+[Notion Link](https://www.notion.so/matthewtsai/57c1ed5ef802477a9a5b9c2ce18886ef?v=d6d9acbf4d27457c8b4f7948b3179b13&pvs=4)
