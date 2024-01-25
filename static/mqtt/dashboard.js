@@ -67,26 +67,3 @@ chatSocket.onclose = function(e) {
         + '/ws/dashboard'
     );
 };
-/*************************
- GEOLOCATION SEND
-**************************/
-var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  };
-function success(geolocation) {
-    chatSocket.send(JSON.stringify({
-        lat: geolocation.coords.latitude,
-        long: geolocation.coords.longitude,
-      }))
-}
-function error(error) {
-    alert(error.code)
-    alert(error.message)
-}
-//Once websocket initialized, get position and update MQTT
-chatSocket.addEventListener("open", () => {
-    navigator.geolocation.getCurrentPosition(success, error, options)
-    navigator.geolocation.watchPosition(success, error, options)
-})
