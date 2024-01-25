@@ -11,7 +11,9 @@ function battery_update(battery_level) {
         indicator.setAttribute('class', "battery-level warn")
     } 
 }
-//NEW: WebSocket
+/*************************
+ WEBSOCKET SETUP
+**************************/
 let chatSocket = 0;
 if (window.location.protocol == "https:") {
     chatSocket = new WebSocket(
@@ -42,13 +44,23 @@ chatSocket.onmessage = function(e) {
             break;
         //implement rest of the cases for all dashboard modules
         default:
+            //error handling
+            if (data['error']) {
+                document.getElementById(data['module']).style.display='block'
+            } else {
+                document.getElementById(data['module']).style.display='none'
+            }
             break;
 
     }
 };
-
+chatSocket.onerror = function(evt) {
+    console.log(evt)
+}
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
+    console.error(e)
+    self.close(e)
     const chatSocket = new WebSocket(
         'ws://'
         + window.location.host
