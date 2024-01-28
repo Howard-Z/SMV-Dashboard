@@ -1,6 +1,5 @@
-//defining chart myChart, init empty
-const ctx = document.getElementById('myChart');
-let chart = new Chart(ctx, {
+//defining chart daq.speed, init empty
+let daqSpeed = new Chart(document.getElementById('daq.speed'), {
     type: 'line',
     data: {
       labels: [],
@@ -16,6 +15,36 @@ let chart = new Chart(ctx, {
           title: {
             display: true,
             text: "Speed (mph)",
+          },
+          beginAtZero: true
+        },
+        x: {
+            title: {
+              display: true,
+              text: "Time (Epoch)",
+            },
+          }
+      }
+    }
+  });
+
+  //defining chart myChart, init empty
+let bear1Rpm = new Chart(document.getElementById('bear1.rpm'), {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        label: 'Time',
+        data: [],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: "RPM",
           },
           beginAtZero: true
         },

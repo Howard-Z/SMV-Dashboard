@@ -28,27 +28,35 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   }
 });
 
-//defining chart myChart, init empty
-let bear1Rpm = new Chart(document.getElementById('bear1.rpm'), {
-  type: 'line',
-  data: {
-    labels: [],
-    datasets: [{
-      label: 'Time',
-      data: [],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      y: {
+  //defining chart rpm, init empty
+let rpm = new Chart(document.getElementById('rpm'), {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [{
+        label: 'Bear 1 RPM',
+        data: [],
+        borderWidth: 1,
+        borderColor: "#FF0000",
+      }, {
+        label: 'Bear 2 RPM',
+        data:[],
+        borderWidth:1,
+        borderColor: "#0000FF",
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: 'top',
+        },
         title: {
           display: true,
-          text: "RPM",
-        },
-        beginAtZero: true
-      },
-      x: {
+          text: 'RPM of Motors 1 and 2'
+        }
+     },
+      scales: {
+        y: {
           title: {
             display: true,
             text: "Time (Epoch)",
@@ -59,12 +67,18 @@ let bear1Rpm = new Chart(document.getElementById('bear1.rpm'), {
 });
 
 //add data to chart with label(x) and newData(y)
-function addData(chart, label, newData) {
-  chart.data.labels.push(label);
-  chart.data.datasets.forEach((dataset) => {
-      dataset.data.push(newData);
-  });
-  chart.update('none');
+function addData(chart, label, newData, index=-1) {
+    if (index==-1) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.push(newData);
+      });
+    }
+    else {
+      chart.data.labels.push(label);
+      chart.data.datasets[index].data.push(newData)
+    }
+    chart.update('none');
 }
 
 //NEW: WebSocket
@@ -84,20 +98,24 @@ if (window.location.protocol == "https:") {
 }
 
 chatSocket.onmessage = function(e) {
-  const data = JSON.parse(e.data);
-  switch (data['module']) {
-      case 'daq.speed':
-          date = new Date()
-          //Speed Data
-          addData(chart, date.getTime(), data['content'])
-          break;
-      case 'power_control.energy':
-          //Battery Data
-          battery_update(data['content'])
-          break;
-      //implement rest of the cases for all dashboard modules
-      default:
-          break;
+    const data = JSON.parse(e.data);
+    date = new Date()
+    switch (data['module']) {
+        case 'daq.speed':
+            //Speed Data
+            addData(daqSpeed, date.getTime(), data['content'])
+            break;
+        case 'bear1.rpm':
+            //Motor 1 RPM data
+            addData(rpm, date.getTime(), data['content'],0)
+            break;
+        case 'bear2.rpm':
+            //Motor 1 RPM data
+            addData(rpm, date.getTime(), data['content'],1)
+            break;
+        //implement rest of the cases for all dashboard modules
+        default:
+            break;
 
   }
 };
