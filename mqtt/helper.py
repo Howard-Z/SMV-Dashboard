@@ -42,7 +42,12 @@ def store(msg):
         payload = round(abs(float(msg.payload.decode())), 3) #absolute value of input, rounded to 3 decimal places
         if round(float(msg.payload.decode()), 3) > 999.000 or round(float(msg.payload.decode()), 3) < 0:
             #if out of bounds(needs to be [0, 999.000))
-            MQTTError.objects.create(module='mqtt', event='receive', message=f'Invalid Argument {payload}', error=True, time=datetime.now(), trip=Trip.objects.last())
+            payload =  round(float(msg.payload.decode()), 3)
+            print(payload)
+            MQTTError.objects.create(module='mqtt', event='receive', message=f'Invalid Argument {msg.payload.decode()}', error=True, time=datetime.now(), trip=Trip.objects.last())
+            async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": True})
+            async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": True})
+        
         else:
             #error is false unless specifically set
             error = False
@@ -51,12 +56,7 @@ def store(msg):
                 if not topics[msg.topic]['max'] >= payload and topics[msg.topic]['min'] <= payload:
                     #if payload not in range, error
                     error = True
-                    if msg.topic not in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
-                        #send all errors to dashboard websocket
-                        async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
             MQTTError.objects.create(module='mqtt', event='receive', message=f'{payload}', error=error, time=datetime.now(), trip=Trip.objects.last())
-            print(payload)
-            print(msg.topic)
             #update associated model
             topics[msg.topic]['model'].objects.create(date=datetime.now(), data=payload, trip=Trip.objects.last()) 
             if str(msg.topic) == "/DAQ/Latitude" and str(msg.topic) == "/DAQ/Longitude":
@@ -65,8 +65,6 @@ def store(msg):
             else:
                 #send to team view always, except for lat/long data
                 async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
-            if str(msg.topic) in ['/DAQ/Speed', "/Power_Control/Voltage", "/Power_Control/Current"]:
-                #send to dashboard ONLY for speed and energy(to avoid sending non-relevant data)
                 async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
     except Exception as e:
         #on error, pass. log error in MQTT Error Log
