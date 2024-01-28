@@ -44,7 +44,7 @@ topics_list = {
         "name": "bear2.rpm",
         "model": RPMData
     },
-    "/Bear_2/RPM": {
+    "/Bear_2/Motor_State": {
         "name": "bear2.motor_state",
         "model": Motor_StateData
     },
