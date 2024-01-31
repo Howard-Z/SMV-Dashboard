@@ -12,7 +12,6 @@
 
 .rightCol {
     margin-left: 235px;
-    
     min-height: 100%;  /* <-- fixes the background-color issue when content grows */
 }
 
