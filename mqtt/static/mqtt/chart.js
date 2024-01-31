@@ -51,7 +51,7 @@ let bear1Rpm = new Chart(document.getElementById('bear1.rpm'), {
         x: {
             title: {
               display: true,
-              text: "Time (Epoch)",
+              text: "X-axis label",
             },
           }
       }
