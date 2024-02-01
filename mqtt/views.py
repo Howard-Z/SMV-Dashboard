@@ -63,7 +63,9 @@ def login_view(request):
             })
     else:
         raise Http404
-    
+
+def new_team_view(request):
+    return render(request, 'mqtt/new_team_dash.html')
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", daemon=True)
 thread.start()

@@ -9,7 +9,9 @@ topics_list = {
     },
         "/Bear_1/Motor_State": {
         "name": "bear1.motor_state",
-        "model": Motor_StateData
+        "model": Motor_StateData,
+        "max": 0,
+        "min": 0
         #io
     },
         "/Bear_1/Cruise": {
@@ -19,13 +21,15 @@ topics_list = {
     },
         "/Bear_1/M_Error_Status": {
         "name": "bear1.m_error_status",
-        "model": M_Error_StatusData
+        "model": M_Error_StatusData,
+        "max": 0,
+        "min": 0
         #error 1, check, io
     },
         "/Bear_1/Throttle": {
         "name": "bear1.throttle",
         "model": ThrottleData,
-        "max": 100,
+        "max": 1028,
         "min": 0
         #error above 1028: check teensy output range, ignore
     },
@@ -44,7 +48,7 @@ topics_list = {
         "name": "bear2.rpm",
         "model": RPMData
     },
-    "/Bear_2/RPM": {
+    "/Bear_2/Motor_State": {
         "name": "bear2.motor_state",
         "model": Motor_StateData
     },
@@ -55,7 +59,9 @@ topics_list = {
     },
     "/Bear_2/M_Error_Status": {
         "name": "bear2.m_error_status",
-        "model": M_Error_StatusData
+        "model": M_Error_StatusData,
+        "max": 0,
+        "min": 0
         #error 1, check
 
     },
@@ -75,12 +81,16 @@ topics_list = {
     #power_control
     "/Power_Control/Current": {
         "name": "power_control.current",
-        "model": CurrentData
+        "model": CurrentData,
+        "max": 120,
+        "min": 0
         # >120 A check back
     },
     "/Power_Control/Voltage": {
         "name": "power_control.voltage",
-        "model": VoltageData
+        "model": VoltageData,
+        "max": 55,
+        "min": 0
         # >55 V
     },
     "/Power_Control/Power": {
@@ -115,7 +125,9 @@ topics_list = {
     },
     "/Steering_Wheel/S_Error_Status": {
         "name": "steering_wheel.s_error_status",
-        "model": S_Error_StatusData
+        "model": S_Error_StatusData,
+        "max": 0,
+        "min": 0
         #io
     },
     #DAQMessage
