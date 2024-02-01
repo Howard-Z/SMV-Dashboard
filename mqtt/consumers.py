@@ -29,11 +29,9 @@ class DashboardConsumer(WebsocketConsumer):
         MQTTError.objects.create(module='ws', event='disconnect', message=f'disconnected with {close_code}', error=False, time=datetime.now(), trip=Trip.objects.last())
 
     def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        lat = text_data_json["lat"]
-        long = text_data_json["long"]
-        Location.objects.create(longitude=long, latitude=lat, trip=Trip.objects.last(), date=datetime.now())
-        send_location(lat, long)
+        date = datetime.fromtimestamp(float(text_data)/1000.0)
+        Trip.objects.last().active=False
+        Trip.objects.create(start=date, date_created=date, active=True,name=f"{date} trip (auto)")
 
     def data_notif(self, event):
         print(event)
@@ -55,6 +53,13 @@ class TeamConsumer(WebsocketConsumer):
         )
         self.groups.append("teamdata")
         self.accept()
+        self.send(text_data=json.dumps({
+            'type': 'team.notif',
+            'module': "timing",
+            'content': f"{Trip.objects.last().start}",
+            'error': False
+            })
+        )
         MQTTError.objects.create(module='ws', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
 
     def disconnect(self, close_code):

@@ -101,6 +101,9 @@ chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     date = new Date()
     switch (data['module']) {
+        case 'timing':
+          //case: initial time from most recent trip
+          break;
         case 'daq.speed':
             //Speed Data
             addData(daqSpeed, date.getTime(), data['content'])

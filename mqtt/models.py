@@ -1,5 +1,6 @@
 from django.db import models
 import sys
+from datetime import datetime
 sys.path.append("..")
 # Create your models here.
     
@@ -7,6 +8,9 @@ class Trip(models.Model):
     name = models.CharField(max_length=128, default="", blank="", null="")
     active = models.BooleanField(default=False)
     date_created = models.DateField()
+    start = models.DateTimeField()
+    stop = models.DateTimeField( default=datetime.fromtimestamp(0), blank=datetime.fromtimestamp(0), null=datetime.fromtimestamp(0))
+
     def __str__(self):
         return f"{self.id}: {self.name}"
 #set: DAQMessage
