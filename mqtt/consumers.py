@@ -4,7 +4,7 @@ from datetime import datetime
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from .helper import send_location
-
+import pytz
 
 class DashboardConsumer(WebsocketConsumer):
     #GROUP NAME: speed
@@ -53,11 +53,18 @@ class TeamConsumer(WebsocketConsumer):
         )
         self.groups.append("teamdata")
         self.accept()
+        #send latest data to front end
+        dt = datetime.now().replace(tzinfo=None) - (Trip.objects.last().start).replace(tzinfo=None)
+        seconds = dt.seconds
+        hours =  seconds // 3600
+        minutes = (seconds % 3600) // 60
+        seconds = seconds % 60
         self.send(text_data=json.dumps({
             'type': 'team.notif',
             'module': "timing",
-            'content': f"{Trip.objects.last().start}",
-            'error': False
+            'hour': f"{hours}",
+            'minute': f"{minutes}",
+            'second': f"{seconds}",
             })
         )
         MQTTError.objects.create(module='ws', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())

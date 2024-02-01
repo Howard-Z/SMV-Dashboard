@@ -91,14 +91,14 @@ chatSocket.addEventListener("open", (event) => {
           
         } 
         
-        if (tens > 99) {
+        if (tens > 59) {
           seconds++;
           appendSeconds.innerHTML = "0" + seconds;
           tens = 0;
           appendTens.innerHTML = "0" + 0;
         }
                 
-        if (seconds > 99) {
+        if (seconds > 59) {
             hours++;
             appendSeconds.innerHTML = "0" + 0;
             appendTens.innerHTML = "0" + 0;
