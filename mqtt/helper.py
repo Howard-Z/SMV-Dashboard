@@ -43,7 +43,6 @@ def store(msg):
         if round(float(msg.payload.decode()), 3) > 999.000 or round(float(msg.payload.decode()), 3) < 0:
             #if out of bounds(needs to be [0, 999.000))
             payload =  round(float(msg.payload.decode()), 3)
-            print(payload)
             MQTTError.objects.create(module='mqtt', event='receive', message=f'Invalid Argument {msg.payload.decode()}', error=True, time=datetime.now(), trip=Trip.objects.last())
             async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": True})
             async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": True})
