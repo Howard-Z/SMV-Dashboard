@@ -1,107 +1,191 @@
+var Interval;
+/**************************************
+TIMER FUNCTION: runs timer at top of page
+***************************************/
+function timer_s(seconds, minutes, hours)
+{
+  console.log(seconds)
+  console.log(minutes)
+  console.log(hours)
+
+  var p2 = minutes; 
+  var p1 = seconds; 
+  var p3 = hours;
+  var appendTens = document.getElementById("tens")
+  var appendSeconds = document.getElementById("seconds")
+  var appendHours = document.getElementById("hours")
+  
+  if (p1){
+    if (p1 < 9) appendTens.innerHTML = "0" + p1;
+    else appendTens.innerHTML = p1;
+  }
+  if (p2){
+    if (p2 < 9) appendSeconds.innerHTML = "0" + p2;
+    else appendSeconds.innerHTML = p2;
+  }
+  if (p3) appendHours.innerHTML = p3;
+  function startTimer () {
+      p1++; 
+      if(p1 <= 9){
+        appendTens.innerHTML = "0" + p1;
+      }
+      
+      if (p1 > 9){
+        appendTens.innerHTML = p1;
+      } 
+      
+      if (p1 > 59) {
+        p2++;
+        appendSeconds.innerHTML = "0" + p2;
+        p1 = 0;
+        appendTens.innerHTML = "0" + 0;
+      }
+              
+      if (p2 > 59) {
+          p3++;
+          appendSeconds.innerHTML = "0" + 0;
+          appendTens.innerHTML = "0" + 0;
+          p1 = 0;
+          p2 = 0;
+          appendHours.innerHTML = "0" + p3;
+        }
+      if (p3 > 9) {
+          appendHours.innerHTML = p3;
+      }
+      if (p2 > 9){
+        appendSeconds.innerHTML = p2;
+      }
+    
+    }
+  Interval = setInterval(startTimer, 1000);
+}
+
 //defining chart daq.speed, init empty
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
-    type: 'line',
-    data: {
-      labels: [],
-      datasets: [{
-        label: 'Speed of Car',
-        data: [],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Speed of Car',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Speed (mph)",
+        },
+        beginAtZero: true
+      },
+      x: {
           title: {
             display: true,
-            text: "Speed (mph)",
+            text: "Time (Epoch)",
           },
-          beginAtZero: true
-        },
-        x: {
-            title: {
-              display: true,
-              text: "Time (Epoch)",
-            },
-          }
-      }
+        }
     }
-  });
+  }
+});
 
-  //defining chart myChart, init empty
-let bear1Rpm = new Chart(document.getElementById('bear1.rpm'), {
+  //defining chart rpm, init empty
+let rpm = new Chart(document.getElementById('rpm'), {
     type: 'line',
     data: {
       labels: [],
       datasets: [{
-        label: 'Time',
+        label: 'Bear 1 RPM',
         data: [],
-        borderWidth: 1
+        borderWidth: 1,
+        borderColor: "#FF0000",
+      }, {
+        label: 'Bear 2 RPM',
+        data:[],
+        borderWidth:1,
+        borderColor: "#0000FF",
       }]
     },
     options: {
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'RPM of Motors 1 and 2'
+        }
+     },
       scales: {
         y: {
           title: {
             display: true,
-            text: "RPM",
+            text: "Time (Epoch)",
           },
-          beginAtZero: true
-        },
-        x: {
-            title: {
-              display: true,
-              text: "Time (Epoch)",
-            },
-          }
-      }
+        }
     }
-  });
+  }
+});
 
 //add data to chart with label(x) and newData(y)
-function addData(chart, label, newData) {
-    chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(newData);
-    });
+function addData(chart, label, newData, index=-1) {
+    if (index==-1) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.push(newData);
+      });
+    }
+    else {
+      chart.data.labels.push(label);
+      chart.data.datasets[index].data.push(newData)
+    }
     chart.update('none');
 }
 
 //NEW: WebSocket
 let chatSocket = 0;
 if (window.location.protocol == "https:") {
-    chatSocket = new WebSocket(
-        'wss://'
-        + window.location.host
-        + '/ws/teamview'
-    );
+  chatSocket = new WebSocket(
+      'wss://'
+      + window.location.host
+      + '/ws/teamview'
+  );
 } else {
-    chatSocket = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/teamview'
-    );
+  chatSocket = new WebSocket(
+      'ws://'
+      + window.location.host
+      + '/ws/teamview'
+  );
 }
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
+    date = new Date()
     switch (data['module']) {
+        case 'timing':
+          //case: initial time from most recent trip
+          timer_s(data['second'], data['minute'], data['hours'])
+          break;
         case 'daq.speed':
-            date = new Date()
             //Speed Data
-            addData(chart, date.getTime(), data['content'])
+            addData(daqSpeed, date.getTime(), data['content'])
             break;
-        case 'power_control.energy':
-            //Battery Data
-            battery_update(data['content'])
+        case 'bear1.rpm':
+            //Motor 1 RPM data
+            addData(rpm, date.getTime(), data['content'],0)
+            break;
+        case 'bear2.rpm':
+            //Motor 1 RPM data
+            addData(rpm, date.getTime(), data['content'],1)
             break;
         //implement rest of the cases for all dashboard modules
         default:
             break;
 
-    }
+  }
 };
 
 chatSocket.onclose = function(e) {
-    console.error('Chat socket closed unexpectedly');
+  console.error('Chat socket closed unexpectedly');
 };

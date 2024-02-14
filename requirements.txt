@@ -6,3 +6,4 @@ daphne==4.0.0
 python-dotenv
 channels-redis
 sentry_sdk #error logging
+pytz #timezone

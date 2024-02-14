@@ -79,44 +79,44 @@ topics_list = {
         "model": Meter_CountData
     },
     #power_control
-    "/Power_Control/Current": {
-        "name": "power_control.current",
-        "model": CurrentData,
-        "max": 120,
-        "min": 0
-        # >120 A check back
-    },
-    "/Power_Control/Voltage": {
-        "name": "power_control.voltage",
-        "model": VoltageData,
-        "max": 55,
-        "min": 0
-        # >55 V
-    },
-    "/Power_Control/Power": {
-        "name": "power_control.power",
-        "model": PowerData
-    },
-    "/Power_Control/Energy": {
-        "name": "power_control.energy",
-        "model": EnergyData
-    },
-    "/Power_Control/T1": {
-        "name": "power_control.t1",
-        "model": T1Data
-    },
-    "/Power_Control/T2": {
-        "name": "power_control.t2",
-        "model": T2Data
-    },
-    "/Power_Control/T3": {
-        "name": "power_control.t3",
-        "model": T3Data
-    },
-    "/Power_Control/P_Error_Status": {
-        "name": "power_control.p_error_status",
-        "model": P_Error_StatusData
-    },
+    # "/Power_Control/Current": {
+    #     "name": "power_control.current",
+    #     "model": CurrentData,
+    #     "max": 120,
+    #     "min": 0
+    #     # >120 A check back
+    # },
+    # "/Power_Control/Voltage": {
+    #     "name": "power_control.voltage",
+    #     "model": VoltageData,
+    #     "max": 55,
+    #     "min": 0
+    #     # >55 V
+    # },
+    # "/Power_Control/Power": {
+    #     "name": "power_control.power",
+    #     "model": PowerData
+    # },
+    # "/Power_Control/Energy": {
+    #     "name": "power_control.energy",
+    #     "model": EnergyData
+    # },
+    # "/Power_Control/T1": {
+    #     "name": "power_control.t1",
+    #     "model": T1Data
+    # },
+    # "/Power_Control/T2": {
+    #     "name": "power_control.t2",
+    #     "model": T2Data
+    # },
+    # "/Power_Control/T3": {
+    #     "name": "power_control.t3",
+    #     "model": T3Data
+    # },
+    # "/Power_Control/P_Error_Status": {
+    #     "name": "power_control.p_error_status",
+    #     "model": P_Error_StatusData
+    # },
     #Steering
     "/Steering_Wheel/Switch_Encoding": {
         "name": "steering_wheel.switch_encoding",

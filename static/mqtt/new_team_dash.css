@@ -1,0 +1,15 @@
+.leftCol {
+    position: fixed; /* <-- fixes the left panel to prevent from scrolling */
+    top: 0;
+    left: 0;
+    width:235px;
+    height:100%;
+    background: cadetblue;
+    border-style: solid;
+}
+
+.rightCol {
+    margin-left:235px;
+    
+    min-height:100%;  /* <-- fixes the background-color issue when content grows */
+}

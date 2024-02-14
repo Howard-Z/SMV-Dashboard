@@ -27,7 +27,10 @@ class Location(models.Model):
     date = models.DateTimeField()
     class Meta:
         verbose_name_plural = " Location Data" 
-#set: powerMessage
+#
+# POWER DATA
+#
+
 class CurrentData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
     data = models.DecimalField(max_digits=6, decimal_places=3)

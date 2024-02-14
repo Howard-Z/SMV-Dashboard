@@ -7,18 +7,31 @@
   <p><span id="hours">00</span>:<span id="seconds">00</span>:<span id="tens">00</span></p>
 </div>
   <!--tab content-->
- <div>
-   <div>
-     <div id= "daqSpeed">
-        <h1>This is a Heading!!!!</h1>
-        <canvas id="daq.speed"></canvas>
-     </div>
-    
-     <p>
-      <div id= "BearRpm">
-        <canvas id="rpm"></canvas>
-     </div>
-     </p>
+ <div class="container" style="width:100%">
+  <div class="row">
+    <div class="col-sm" style="width:20%">
+      <ul class="list-group">
+        <li class="list-group-item">Cras justo odio</li>
+        <li class="list-group-item">Dapibus ac facilisis in</li>
+        <li class="list-group-item">Morbi leo risus</li>
+        <li class="list-group-item">Porta ac consectetur ac</li>
+        <li class="list-group-item">Vestibulum at eros</li>
+      </ul>
+    </div>
+    <div class="col-sm" style="width:80%">
+      <div>
+        <div id= "daqSpeed">
+           <h1>This is a Heading!!!!</h1>
+           <canvas id="daq.speed"></canvas>
+        </div>
+       
+        <p>
+         <div id= "BearRpm">
+           <canvas id="rpm"></canvas>
+        </div>
+        </p>
+    </div>
+  </div>
   </div>
   </div>
 {% endblock %}

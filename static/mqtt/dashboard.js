@@ -67,3 +67,52 @@ chatSocket.onclose = function(e) {
         + '/ws/dashboard'
     );
 };
+chatSocket.addEventListener("open", (event) => {
+    alert("Press OK to start the timer");
+    d = new Date();
+    chatSocket.send(d.getTime());
+    var seconds = 0; 
+    var tens = 0; 
+    var hours = 0;
+    var appendTens = document.getElementById("tens")
+    var appendSeconds = document.getElementById("seconds")
+    var appendHours = document.getElementById("hours")
+
+    var Interval ;
+    function startTimer () {
+        tens++; 
+        
+        if(tens <= 9){
+          appendTens.innerHTML = "0" + tens;
+        }
+        
+        if (tens > 9){
+          appendTens.innerHTML = tens;
+          
+        } 
+        
+        if (tens > 59) {
+          seconds++;
+          appendSeconds.innerHTML = "0" + seconds;
+          tens = 0;
+          appendTens.innerHTML = "0" + 0;
+        }
+                
+        if (seconds > 59) {
+            hours++;
+            appendSeconds.innerHTML = "0" + 0;
+            appendTens.innerHTML = "0" + 0;
+            tens = 0;
+            seconds = 0;
+            appendHours.innerHTML = "0" + hours;
+          }
+        if (hours > 9) {
+            appendHours.innerHTML = hours;
+        }
+        if (seconds > 9){
+          appendSeconds.innerHTML = seconds;
+        }
+      
+      }
+    Interval = setInterval(startTimer, 1000);
+  });
