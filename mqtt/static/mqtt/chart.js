@@ -1,3 +1,65 @@
+var Interval;
+/**************************************
+TIMER FUNCTION: runs timer at top of page
+***************************************/
+function timer_s(seconds, minutes, hours)
+{
+  console.log(seconds)
+  console.log(minutes)
+  console.log(hours)
+
+  var p2 = minutes; 
+  var p1 = seconds; 
+  var p3 = hours;
+  var appendTens = document.getElementById("tens")
+  var appendSeconds = document.getElementById("seconds")
+  var appendHours = document.getElementById("hours")
+  
+  if (p1){
+    if (p1 < 9) appendTens.innerHTML = "0" + p1;
+    else appendTens.innerHTML = p1;
+  }
+  if (p2){
+    if (p2 < 9) appendSeconds.innerHTML = "0" + p2;
+    else appendSeconds.innerHTML = p2;
+  }
+  if (p3) appendHours.innerHTML = p3;
+  function startTimer () {
+      p1++; 
+      if(p1 <= 9){
+        appendTens.innerHTML = "0" + p1;
+      }
+      
+      if (p1 > 9){
+        appendTens.innerHTML = p1;
+      } 
+      
+      if (p1 > 59) {
+        p2++;
+        appendSeconds.innerHTML = "0" + p2;
+        p1 = 0;
+        appendTens.innerHTML = "0" + 0;
+      }
+              
+      if (p2 > 59) {
+          p3++;
+          appendSeconds.innerHTML = "0" + 0;
+          appendTens.innerHTML = "0" + 0;
+          p1 = 0;
+          p2 = 0;
+          appendHours.innerHTML = "0" + p3;
+        }
+      if (p3 > 9) {
+          appendHours.innerHTML = p3;
+      }
+      if (p2 > 9){
+        appendSeconds.innerHTML = p2;
+      }
+    
+    }
+  Interval = setInterval(startTimer, 1000);
+}
+
 //defining chart daq.speed, init empty
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   type: 'line',
@@ -101,6 +163,10 @@ chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     date = new Date()
     switch (data['module']) {
+        case 'timing':
+          //case: initial time from most recent trip
+          timer_s(data['second'], data['minute'], data['hours'])
+          break;
         case 'daq.speed':
             //Speed Data
             addData(daqSpeed, date.getTime(), data['content'])

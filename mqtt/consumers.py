@@ -4,7 +4,7 @@ from datetime import datetime
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from .helper import send_location
-
+import pytz
 
 class DashboardConsumer(WebsocketConsumer):
     #GROUP NAME: speed
@@ -29,11 +29,9 @@ class DashboardConsumer(WebsocketConsumer):
         MQTTError.objects.create(module='ws', event='disconnect', message=f'disconnected with {close_code}', error=False, time=datetime.now(), trip=Trip.objects.last())
 
     def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        lat = text_data_json["lat"]
-        long = text_data_json["long"]
-        Location.objects.create(longitude=long, latitude=lat, trip=Trip.objects.last(), date=datetime.now())
-        send_location(lat, long)
+        date = datetime.fromtimestamp(float(text_data)/1000.0)
+        Trip.objects.last().active=False
+        Trip.objects.create(start=date, date_created=date, active=True,name=f"{date} trip (auto)")
 
     def data_notif(self, event):
         print(event)
@@ -55,6 +53,20 @@ class TeamConsumer(WebsocketConsumer):
         )
         self.groups.append("teamdata")
         self.accept()
+        #send latest data to front end
+        dt = datetime.now().replace(tzinfo=None) - (Trip.objects.last().start).replace(tzinfo=None)
+        seconds = dt.seconds
+        hours =  seconds // 3600
+        minutes = (seconds % 3600) // 60
+        seconds = seconds % 60
+        self.send(text_data=json.dumps({
+            'type': 'team.notif',
+            'module': "timing",
+            'hour': f"{hours}",
+            'minute': f"{minutes}",
+            'second': f"{seconds}",
+            })
+        )
         MQTTError.objects.create(module='ws', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
 
     def disconnect(self, close_code):

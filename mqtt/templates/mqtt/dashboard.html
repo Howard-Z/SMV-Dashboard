@@ -19,6 +19,8 @@
   <div style="display: none; width: 5%; height: 10%; left: 77%; top: 80%; position: absolute;"></div>
   <div id="power_control.voltage" style="display: none; width: 5%; height: 10%; left: 88.6%; top: 62.4%; position: absolute;"><img src="{% static 'mqtt/voltage_error_symbol.png' %}" height="100%" width="100%"></div>
   <div id="power_control.current" style="display: none; width: 5%; height: 10%; left: 77%; top: 62.4%; position: absolute;"><img src="{% static 'mqtt/current_error_symbol.png' %}" height="100%" width="100%"></div>
+
+  <p style="font-size: xx-large;"><span id="hours">00</span>:<span id="seconds">00</span>:<span id="tens">00</span></p>
 {% endblock %}
 
 {% block js %}
