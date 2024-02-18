@@ -340,6 +340,26 @@ chatSocket.onmessage = function(e) {
             //Motor 1 RPM data
             addData(rpm, date.getTime(), data['content'],1)
             break;
+        case 'bear2.rpm':
+          //Motor 1 RPM data
+          addData(rpm, date.getTime(), data['content'],1)
+          break;
+        case 'power_control.temperature':
+          //Motor 1 RPM data
+          addData(temp, date.getTime(), data['content'],0)
+          break;
+        case 'power_control.voltage':
+          //Motor 1 RPM data
+          addData(voltage, date.getTime(), data['content'],0)
+          break;
+        case 'power_control.current':
+          //Motor 1 RPM data
+          addData(current, date.getTime(), data['content'],0)
+          break;
+        case 'power_control.power':
+          //Motor 1 RPM data
+          addData(power, date.getTime(), data['content'],0)
+          break;
         //implement rest of the cases for all dashboard modules
         default:
             break;

@@ -79,20 +79,27 @@ topics_list = {
         "model": Meter_CountData
     },
     #power_control
-    # "/Power_Control/Current": {
-    #     "name": "power_control.current",
-    #     "model": CurrentData,
-    #     "max": 120,
-    #     "min": 0
-    #     # >120 A check back
-    # },
-    # "/Power_Control/Voltage": {
-    #     "name": "power_control.voltage",
-    #     "model": VoltageData,
-    #     "max": 55,
-    #     "min": 0
-    #     # >55 V
-    # },
+    "/Power_Control/Current": {
+        "name": "power_control.current",
+        "model": CurrentData,
+        "max": 120,
+        "min": 0
+        # >120 A check back
+    },
+    "/Power_Control/Voltage": {
+        "name": "power_control.voltage",
+        "model": VoltageData,
+        "max": 55,
+        "min": 0
+        # >55 V
+    },
+    "/Power_Control/Temperature": {
+        "name": "power_control.temperature",
+        "model": VoltageData,
+        "max": 55,
+        "min": 0
+        # >55 V
+    },
     # "/Power_Control/Power": {
     #     "name": "power_control.power",
     #     "model": PowerData
