@@ -42,6 +42,15 @@ chatSocket.onmessage = function(e) {
             //Battery Data
             battery_update(data['content'])
             break;
+        case 'power_control.current':
+            document.getElementById("current_read").innerHTML = `${Math.round(data['content'])} A`
+            break;
+        case 'power_control.temperature':
+            document.getElementById("temperature_read").innerHTML = `${Math.round(data['content'])} C`
+            break;
+        case 'power_control.voltage':
+            document.getElementById("voltage_read").innerHTML = `${Math.round(data['content'])} V`
+            break;
         //implement rest of the cases for all dashboard modules
         default:
             //error handling
@@ -68,7 +77,7 @@ chatSocket.onclose = function(e) {
     );
 };
 chatSocket.addEventListener("open", (event) => {
-    alert("Press OK to start the timer");
+    // alert("Press OK to start the timer");
     d = new Date();
     chatSocket.send(d.getTime());
     var seconds = 0; 
@@ -114,5 +123,6 @@ chatSocket.addEventListener("open", (event) => {
         }
       
       }
-    Interval = setInterval(startTimer, 1000);
+    if (1 != 1) Interval = setInterval(startTimer, 1000); //disable timer
+
   });
