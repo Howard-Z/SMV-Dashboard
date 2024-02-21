@@ -19,7 +19,7 @@
             <button class='btn btn-primary' onclick="mqtt_publish()">Publish MQTT(Debug)</button>
         </div>
         <div>
-            <button class='btn btn-primary' onclick="test_websocket()">Publish Websocket(Debug)</button>
+            <button class='btn btn-primary' onclick="test_mqtt()">Nuke Server (DEBUG)</button>
         </div>
     </div>
     {% endif %}
@@ -122,15 +122,7 @@
         })
 
     };   
-    function test_websocket() {
-            let channel = prompt("Channel ('speed' for dashboard, 'teamdata' for team view)")
-            if (channel == "speed") {
-                type1 = "data.notif"
-            } else {
-                type1 = "team.notif"
-            }
-            let module1 = prompt("Module")
-            let content = prompt("Content")
+    function test_mqtt() {
             fetch(`{% url 'dash_admin' %}`, {
                 method: 'POST',
                 headers: {
@@ -138,8 +130,8 @@
                     },
                 credentials: 'same-origin',
                 body: JSON.stringify({
-                    'data': `{"channel": "${channel}", "module": "${module1}","type1": "${type1}", "content": "${content}"}`,
-                    'feature': "test_websocket"
+                    'data': `lmao`,
+                    'feature': "test_mqtt"
                 })
             })
             .then(response=>response.json())
