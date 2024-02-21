@@ -7,6 +7,9 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import os
 import sys
+from random import randint
+
+import time
 
 sys.path.append('..')
 from smvDashboard.settings import ip_address
@@ -88,6 +91,8 @@ def run():
 def publish(topic, message):
     client = connect_mqtt(client_id=f'subscribe-{random.randint(0, 1000)}')
     client.publish(topic, message)
+def publish(client, topic, message):
+    client.publish(topic, message)
 
 def send_location(lat, long):
     channel_layer = get_channel_layer()
@@ -96,3 +101,11 @@ def send_location(lat, long):
 def test_senddata(channel, module, content, type1):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(channel, {"type": type1, "module": module, "content": content, "error": False})
+def test_mqttStress(numPerSec):
+    client = connect_mqtt()
+    ct = 0
+    while ct < numPerSec:
+        for key, val in topics.items():
+            ct += 1
+            publish(client, key, randint(-5,100))
+            time.sleep(1/6600)

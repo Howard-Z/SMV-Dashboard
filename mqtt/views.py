@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse, Http404
-from .helper import run, publish, test_senddata
+from .helper import run, publish, test_senddata, test_mqttStress
 from .models import Trip
 import threading
 import json
@@ -31,10 +31,8 @@ def dash_admin(request):
             case "publish_mqtt":
                 data = json.loads(data['data'])
                 publish(topic=data['topic'], message=data['message'])
-            case "test_websocket":
-                data = json.loads(data['data'])
-                print(data)
-                test_senddata(data['channel'], data['module'], data['content'], data['type1'])
+            case "test_mqtt":
+                test_mqttStress()
         return JsonResponse({"status": "200"})
     else:
         recent_trip = Trip.objects.last()
@@ -43,6 +41,8 @@ def dash_admin(request):
         })
     
 def team_view(request):
+    # test_mqttStress(6600)
+
     return render(request, 'mqtt/team_dash.html')
 
 
