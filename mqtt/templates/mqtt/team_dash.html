@@ -6,53 +6,91 @@
 {% endblock %}
 
 {% block body %}
+<!-- CSS stylesheet -->
+<style type="text/css">
+  html,
+  body {
+    height: 100%;
+  }
+  #green {
+    height: 100%;
+    background: rgb(255, 172, 245);
+    text-align: center;
+    color: black;
+  }
+  h4 {text-align: center;}
+
+</style>
 <div style="font-size:40px">
   <p><span id="hours">00</span>:<span id="seconds">00</span>:<span id="tens">00</span></p>
 </div>
+
   <!--tab content-->
   <div style="position:relative">
-
-    <div id="list-example" class="list-group">
-      <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-2">Item 2</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-3">Item 3</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-4">Item 5</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-4">Item 6</a>
-    </div>
-
+	<div class="container-fluid h-100">
+		<div class="row h-100">
+			<div class="col-2" id="green">
+				<!-- Navigation links in sidebar-->
+				<a href="#list-item-1">Speed</a>
+				<br/>
+				<br/>
+				<a href="#list-item-2">RPM</a>
+				<br/>
+				<br/>
+				<a href="#list-item-3">Fuel Cell Voltage</a>
+				<br/>
+				<br/>
+				<a href="#list-item-4">Fuel Cell Current</a>
+				<br/>
+				<br/>
+        <a href="#list-item-5">Fuel Cell Power</a>
+				<br/>
+				<br/>
+        <a href="#list-item-6">Fuel Cell Temperature</a>
+				<br/>
+				<br/>
+			</div>
+      
+  <div class="col-10" style="text-align: justify;">
     
-    <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
-      <h4 id="list-item-1">Item 1</h4>
-      <p>
+      <h4 id="list-item-1">Speed</h4>
         <div id= "daqSpeed">
-           <h1>This is a Heading!!!!</h1>
            <canvas id="daq.speed"></canvas>
         </div>
-       <h4 id="list-item-2">Item 2</h4>
-        <p>
+      <br/>
+			<br/>
+      <h4 id="list-item-2">RPM</h4>
         <div id= "BearRpm">
            <canvas id="rpm"></canvas>
         </div>
-<h4 id="list-item-3">Item 3</h4>
+      <br/>
+			<br/>
+      <h4 id="list-item-3">Fuel Cell Voltage</h4>
         <div id= "voltage">
           <canvas id="power_control.voltage"></canvas>
         </div>
-<h4 id="list-item-4">Item 4</h4>
+      <br/>
+			<br/>
+      <h4 id="list-item-4">Fuel Cell Current</h4>
         <div id= "current">
           <canvas id="power_control.current"></canvas>
         </div>
-<h4 id="list-item-5">Item 5</h4>
+      <br/>
+			<br/>
+      <h4 id="list-item-5">Fuel Cell Power</h4>
         <div id= "power">
             <canvas id="power_control.power"></canvas>
         </div>
-<h4 id="list-item-6">Item 5</h4>
+      <br/>
+			<br/>
+      <h4 id="list-item-6">Fuel Cell Temperature</h4>
         <div id= "temperature">
           <canvas id="power_control.temperature"></canvas>
         </div>
         </p>
     </div>
   </div>
+</div>
   
 {% endblock %}
 
@@ -61,4 +99,6 @@
 <!-- <script src="{% static 'mqtt/team_dash.js' %}"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'mqtt/chart.js' %}"></script>
+
+
 {% endblock %}
