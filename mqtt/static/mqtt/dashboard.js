@@ -77,7 +77,7 @@ chatSocket.onclose = function(e) {
     );
 };
 chatSocket.addEventListener("open", (event) => {
-    // alert("Press OK to start the timer");
+    alert("Press OK to start the timer");
     d = new Date();
     chatSocket.send(d.getTime());
     var seconds = 0; 
@@ -123,6 +123,6 @@ chatSocket.addEventListener("open", (event) => {
         }
       
       }
-    if (1 != 1) Interval = setInterval(startTimer, 1000); //disable timer
+    Interval = setInterval(startTimer, 1000); //disable timer: if (1 != 1) 
 
   });

@@ -32,7 +32,7 @@ def dash_admin(request):
                 data = json.loads(data['data'])
                 publish(topic=data['topic'], message=data['message'])
             case "test_mqtt":
-                test_mqttStress()
+                test_mqttStress(6600)
         return JsonResponse({"status": "200"})
     else:
         recent_trip = Trip.objects.last()
