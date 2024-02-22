@@ -23,6 +23,8 @@ def chart(request):
 def dash_admin(request):
     if request.method == "POST":
         data = json.loads(request.body)
+        if not request.user.is_authenticated:
+            return Http404()
         match data['feature']:
             case "increment_trip":
                 if data['data'] is not None:
