@@ -71,7 +71,7 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
     datasets: [{
       label: 'Speed of Car',
       data: [],
-      borderWidth: 1
+      borderWidth: 1,
     }]
   },
   options: {
@@ -81,7 +81,8 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
       },
       title: {
         display: true,
-        text: 'Car Speed (mph)'
+        text: 'Car Speed (mph)',
+        color: "#adadad"
       }
    },
     scales: {
@@ -89,6 +90,7 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
         title: {
           display: true,
           text: "Speed (mph)",
+          color: "#c2c2c2"
         },
         beginAtZero: true
       },
@@ -101,6 +103,7 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
               max: 100  
             },
             text: "Time (Min:Sec)",
+            color: "#c2c2c2"
           },
         }
     }
