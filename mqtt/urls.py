@@ -9,6 +9,4 @@ urlpatterns = [
 
     #conceptual ideation for team dash
     path("test/map", views.map, name="map"),
-    path("test/chart", views.chart, name="chart"),
-    path("test/team", views.new_team_view)    
 ]
