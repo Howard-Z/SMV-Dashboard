@@ -59,6 +59,9 @@ function timer_s(seconds, minutes, hours)
     }
   Interval = setInterval(startTimer, 1000);
 }
+var dateTime = new Date().getTime();
+var startMin = dateTime/60000;
+var startSec = dateTime/1000;
 
 //defining chart daq.speed, init empty
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
@@ -92,7 +95,12 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
       x: {
           title: {
             display: true,
-            text: "Time (Epoch)",
+            ticks: {
+              beginAtZero:true,
+              min: 0,
+              max: 100  
+            },
+            text: "Time (Min:Sec)",
           },
         }
     }
@@ -130,12 +138,76 @@ let rpm = new Chart(document.getElementById('rpm'), {
         y: {
           title: {
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (Min:Sec)",
           },
         }
     }
   }
 });
+var maxValues = 10;
+setInterval(() => {
+  var currentDateTime = new Date().getTime();
+  var currentMin = Math.trunc(currentDateTime/60000-startMin);
+  var currentSec = Math.trunc(currentDateTime/1000-startSec);
+  if (currentSec>59){
+    currentSec%=60;
+  }
+  var currentTime = currentMin +":"+ currentSec;
+
+  daqSpeed.data.labels.push(currentTime);
+  daqSpeed.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (daqSpeed.data.labels.length > maxValues) {
+    daqSpeed.data.labels.shift();
+    daqSpeed.data.datasets[0].data.shift();
+  }
+
+  rpm.data.labels.push(currentTime);
+  rpm.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  rpm.data.datasets[1].data.push(Math.floor((Math.random() * 20) + 1));
+  if (rpm.data.labels.length > maxValues) {
+    rpm.data.labels.shift();
+    rpm.data.datasets[0].data.shift();
+    rpm.data.datasets[1].data.shift();
+  }
+
+  power.data.labels.push(currentTime);
+  power.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (power.data.labels.length > maxValues) {
+    power.data.labels.shift();
+    power.data.datasets[0].data.shift();
+  }
+
+  current.data.labels.push(currentTime);
+  current.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (current.data.labels.length > maxValues) {
+    current.data.labels.shift();
+    current.data.datasets[0].data.shift();
+  }
+
+  voltage.data.labels.push(currentTime);
+  voltage.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (voltage.data.labels.length > maxValues) {
+    voltage.data.labels.shift();
+    voltage.data.datasets[0].data.shift();
+  }
+
+  temp.data.labels.push(currentTime);
+  temp.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (temp.data.labels.length > maxValues) {
+    temp.data.labels.shift();
+    temp.data.datasets[0].data.shift();
+  }
+  temp.update();
+  voltage.update();
+  current.update();
+  power.update();
+  rpm.update();
+  daqSpeed.update();
+
+  
+}, 1000);
+
+
 //defining chart daq.speed, init empty
 let power = new Chart(document.getElementById('power_control.power'), {
   type: 'line',
@@ -168,12 +240,13 @@ let power = new Chart(document.getElementById('power_control.power'), {
       x: {
           title: {
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (Min:Sec)",
           },
         }
     }
   }
 });
+
 //defining chart daq.speed, init empty
 let current = new Chart(document.getElementById('power_control.current'), {
   type: 'line',
@@ -206,12 +279,13 @@ let current = new Chart(document.getElementById('power_control.current'), {
       x: {
           title: {
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (Min:Sec)",
           },
         }
     }
   }
 });
+
 //defining chart daq.speed, init empty
 let voltage = new Chart(document.getElementById('power_control.voltage'), {
   type: 'line',
@@ -244,7 +318,7 @@ let voltage = new Chart(document.getElementById('power_control.voltage'), {
       x: {
           title: {
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (Min:Sec)",
           },
         }
     }
@@ -283,12 +357,13 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
       x: {
           title: {
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (Min:Sec)",
           },
         }
     }
   }
 });
+
 //add data to chart with label(x) and newData(y)
 function addData(chart, label, newData, index=-1) {
     if (index==-1) {
