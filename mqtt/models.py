@@ -55,6 +55,12 @@ class EnergyData(models.Model):
     date = models.DateTimeField()
     class Meta:
         verbose_name_plural = "  Energy Data" 
+class Temperature(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Temperature Data" 
 class T1Data(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
     data = models.DecimalField(max_digits=6, decimal_places=3)

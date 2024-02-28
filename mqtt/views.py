@@ -18,11 +18,11 @@ def index(request):
 def map(request):
     #temp map view 
     return render(request, 'mqtt/map.html')
-def chart(request):
-    return render(request, 'mqtt/chart.html')
 def dash_admin(request):
     if request.method == "POST":
         data = json.loads(request.body)
+        if not request.user.is_authenticated:
+            return Http404()
         match data['feature']:
             case "increment_trip":
                 if data['data'] is not None:
@@ -32,7 +32,7 @@ def dash_admin(request):
                 data = json.loads(data['data'])
                 publish(topic=data['topic'], message=data['message'])
             case "test_mqtt":
-                test_mqttStress()
+                test_mqttStress(6600)
         return JsonResponse({"status": "200"})
     else:
         recent_trip = Trip.objects.last()
@@ -41,8 +41,6 @@ def dash_admin(request):
         })
     
 def team_view(request):
-    # test_mqttStress(6600)
-
     return render(request, 'mqtt/team_dash.html')
 
 
@@ -64,8 +62,6 @@ def login_view(request):
     else:
         raise Http404
 
-def new_team_view(request):
-    return render(request, 'mqtt/new_team_dash.html')
 #threading: starts and maintains MQTT subscription in the background, using run(topics) function from helper
 thread = threading.Thread(target=run, name="MQTT_Subscribe", daemon=True)
 thread.start()
