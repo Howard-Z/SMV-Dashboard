@@ -63,6 +63,72 @@ var dateTime = new Date().getTime();
 var startMin = dateTime/60000;
 var startSec = dateTime/1000;
 
+//autoscroll with test data and time(min:sec)
+var maxValues = 10;
+setInterval(() => {
+  var currentDateTime = new Date().getTime();
+  var currentMin = Math.trunc(currentDateTime/60000-startMin);
+  var currentSec = Math.trunc(currentDateTime/1000-startSec);
+  if (currentSec>59){
+    currentSec%=60;
+  }
+  var currentTime = currentMin +":"+ currentSec;
+
+  daqSpeed.data.labels.push(currentTime);
+  daqSpeed.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (daqSpeed.data.labels.length > maxValues) {
+    daqSpeed.data.labels.shift();
+    daqSpeed.data.datasets[0].data.shift();
+  }
+
+  rpm.data.labels.push(currentTime);
+  rpm.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  rpm.data.datasets[1].data.push(Math.floor((Math.random() * 20) + 1));
+  if (rpm.data.labels.length > maxValues) {
+    rpm.data.labels.shift();
+    rpm.data.datasets[0].data.shift();
+    rpm.data.datasets[1].data.shift();
+  }
+
+  power.data.labels.push(currentTime);
+  power.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (power.data.labels.length > maxValues) {
+    power.data.labels.shift();
+    power.data.datasets[0].data.shift();
+  }
+
+  current.data.labels.push(currentTime);
+  current.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (current.data.labels.length > maxValues) {
+    current.data.labels.shift();
+    current.data.datasets[0].data.shift();
+  }
+
+  voltage.data.labels.push(currentTime);
+  voltage.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (voltage.data.labels.length > maxValues) {
+    voltage.data.labels.shift();
+    voltage.data.datasets[0].data.shift();
+  }
+
+  temp.data.labels.push(currentTime);
+  temp.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (temp.data.labels.length > maxValues) {
+    temp.data.labels.shift();
+    temp.data.datasets[0].data.shift();
+  }
+  temp.update();
+  voltage.update();
+  current.update();
+  power.update();
+  rpm.update();
+  daqSpeed.update();
+
+  
+}, 1000);
+
+Chart.defaults.borderColor = "#8c8b8b";
+
 //defining chart daq.speed, init empty
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   type: 'line',
@@ -133,6 +199,7 @@ let rpm = new Chart(document.getElementById('rpm'), {
           position: 'top',
         },
         title: {
+          color: "#adadad",
           display: true,
           text: 'RPM of Motors 1 and 2'
         }
@@ -140,6 +207,7 @@ let rpm = new Chart(document.getElementById('rpm'), {
       scales: {
         y: {
           title: {
+            color: "#c2c2c2",
             display: true,
             text: "Time (Min:Sec)",
           },
@@ -147,69 +215,6 @@ let rpm = new Chart(document.getElementById('rpm'), {
     }
   }
 });
-var maxValues = 10;
-setInterval(() => {
-  var currentDateTime = new Date().getTime();
-  var currentMin = Math.trunc(currentDateTime/60000-startMin);
-  var currentSec = Math.trunc(currentDateTime/1000-startSec);
-  if (currentSec>59){
-    currentSec%=60;
-  }
-  var currentTime = currentMin +":"+ currentSec;
-
-  daqSpeed.data.labels.push(currentTime);
-  daqSpeed.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  if (daqSpeed.data.labels.length > maxValues) {
-    daqSpeed.data.labels.shift();
-    daqSpeed.data.datasets[0].data.shift();
-  }
-
-  rpm.data.labels.push(currentTime);
-  rpm.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  rpm.data.datasets[1].data.push(Math.floor((Math.random() * 20) + 1));
-  if (rpm.data.labels.length > maxValues) {
-    rpm.data.labels.shift();
-    rpm.data.datasets[0].data.shift();
-    rpm.data.datasets[1].data.shift();
-  }
-
-  power.data.labels.push(currentTime);
-  power.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  if (power.data.labels.length > maxValues) {
-    power.data.labels.shift();
-    power.data.datasets[0].data.shift();
-  }
-
-  current.data.labels.push(currentTime);
-  current.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  if (current.data.labels.length > maxValues) {
-    current.data.labels.shift();
-    current.data.datasets[0].data.shift();
-  }
-
-  voltage.data.labels.push(currentTime);
-  voltage.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  if (voltage.data.labels.length > maxValues) {
-    voltage.data.labels.shift();
-    voltage.data.datasets[0].data.shift();
-  }
-
-  temp.data.labels.push(currentTime);
-  temp.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  if (temp.data.labels.length > maxValues) {
-    temp.data.labels.shift();
-    temp.data.datasets[0].data.shift();
-  }
-  temp.update();
-  voltage.update();
-  current.update();
-  power.update();
-  rpm.update();
-  daqSpeed.update();
-
-  
-}, 1000);
-
 
 //defining chart daq.speed, init empty
 let power = new Chart(document.getElementById('power_control.power'), {
@@ -228,6 +233,7 @@ let power = new Chart(document.getElementById('power_control.power'), {
         position: 'top',
       },
       title: {
+        color: "#adadad",
         display: true,
         text: 'Fuel Cell Power (W)'
       }
@@ -235,6 +241,7 @@ let power = new Chart(document.getElementById('power_control.power'), {
     scales: {
       y: {
         title: {
+          color: "#c2c2c2",
           display: true,
           text: "Fuel Cell Power (W)",
         },
@@ -242,6 +249,7 @@ let power = new Chart(document.getElementById('power_control.power'), {
       },
       x: {
           title: {
+            color: "#c2c2c2",
             display: true,
             text: "Time (Min:Sec)",
           },
@@ -267,6 +275,7 @@ let current = new Chart(document.getElementById('power_control.current'), {
         position: 'top',
       },
       title: {
+        color: "#adadad",
         display: true,
         text: 'Fuel Cell Current (A)'
       }
@@ -274,6 +283,7 @@ let current = new Chart(document.getElementById('power_control.current'), {
     scales: {
       y: {
         title: {
+          color: "#c2c2c2",
           display: true,
           text: "Current (A)",
         },
@@ -281,6 +291,7 @@ let current = new Chart(document.getElementById('power_control.current'), {
       },
       x: {
           title: {
+            color: "#c2c2c2",
             display: true,
             text: "Time (Min:Sec)",
           },
@@ -306,6 +317,7 @@ let voltage = new Chart(document.getElementById('power_control.voltage'), {
         position: 'top',
       },
       title: {
+        color: "#adadad",
         display: true,
         text: 'Fuel Cell Voltage (V)'
       }
@@ -313,6 +325,7 @@ let voltage = new Chart(document.getElementById('power_control.voltage'), {
     scales: {
       y: {
         title: {
+          color: "#c2c2c2",
           display: true,
           text: "Voltage (V)",
         },
@@ -320,6 +333,7 @@ let voltage = new Chart(document.getElementById('power_control.voltage'), {
       },
       x: {
           title: {
+            color: "#c2c2c2",
             display: true,
             text: "Time (Min:Sec)",
           },
@@ -345,6 +359,7 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
         position: 'top',
       },
       title: {
+        color: "#adadad",
         display: true,
         text: 'Fuel Cell Temperature (C)'
       }
@@ -352,6 +367,7 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
     scales: {
       y: {
         title: {
+          color: "#c2c2c2",
           display: true,
           text: "Temperature (C)",
         },
@@ -359,6 +375,7 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
       },
       x: {
           title: {
+            color: "#c2c2c2",
             display: true,
             text: "Time (Min:Sec)",
           },
