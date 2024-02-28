@@ -397,7 +397,7 @@ if (window.location.protocol == "https:") {
       + '/ws/teamview'
   );
 }
-
+let ct = 0;
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     date = new Date()
@@ -418,10 +418,6 @@ chatSocket.onmessage = function(e) {
             //Motor 1 RPM data
             addData(rpm, date.getTime(), data['content'],1)
             break;
-        case 'bear2.rpm':
-          //Motor 1 RPM data
-          addData(rpm, date.getTime(), data['content'],1)
-          break;
         case 'power_control.temperature':
           //Motor 1 RPM data
           addData(temp, date.getTime(), data['content'],0)
@@ -441,9 +437,11 @@ chatSocket.onmessage = function(e) {
         //implement rest of the cases for all dashboard modules
         default:
             break;
-
   }
+  ct++;
+  console.log(ct);
 };
+
 
 chatSocket.onclose = function(e) {
   console.error('Chat socket closed unexpectedly');

@@ -95,7 +95,7 @@ topics_list = {
     },
     "/Power_Control/Temperature": {
         "name": "power_control.temperature",
-        "model": VoltageData,
+        "model": Temperature,
         "max": 55,
         "min": 0
         # >55 V

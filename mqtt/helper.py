@@ -37,7 +37,7 @@ def connect_mqtt(client_id=client_id) -> mqtt_client:
     client.on_connect = on_connect
     client.connect(broker, port)
     return client
-
+r_ct = 0
 def store(msg):
     channel_layer = get_channel_layer()
     try:
@@ -68,7 +68,10 @@ def store(msg):
                 #send to team view always, except for lat/long data
                 async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
                 async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
+        r_ct += 1
+        # print(f"r_ct: {r_ct}")    
     except Exception as e:
+        r_ct+=1
         #on error, pass. log error in MQTT Error Log
         MQTTError.objects.create(module='mqtt', event='receive', message=f'{e}', error=True, time=datetime.now(), trip=Trip.objects.last())
 
@@ -102,10 +105,8 @@ def test_senddata(channel, module, content, type1):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(channel, {"type": type1, "module": module, "content": content, "error": False})
 def test_mqttStress(numPerSec):
-    client = connect_mqtt()
-    ct = 0
+    client1 = connect_mqtt()
     while ct < numPerSec:
         for key, val in topics.items():
-            ct += 1
-            publish(client, key, randint(-5,100))
+            publish(client1, key, randint(-5,100))
             time.sleep(1/6600)

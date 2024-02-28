@@ -34,7 +34,7 @@ class DashboardConsumer(WebsocketConsumer):
         Trip.objects.create(start=date, date_created=date, active=True,name=f"{date} trip (auto)")
 
     def data_notif(self, event):
-        print(event)
+        # print(event)
         self.send(text_data=json.dumps({
                 'type': 'data.notif',
                 'module': event['module'],
@@ -80,7 +80,7 @@ class TeamConsumer(WebsocketConsumer):
         print(text_data)
 
     def team_notif(self, event):
-        print(event)
+        # print(event)
         self.send(text_data=json.dumps({
                 'type': 'team.notif',
                 'module': event['module'],

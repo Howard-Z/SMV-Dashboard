@@ -77,6 +77,15 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
     }]
   },
   options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Car Speed (mph)'
+      }
+   },
     scales: {
       y: {
         title: {
@@ -189,7 +198,159 @@ let rpm = new Chart(document.getElementById('rpm'), {
     }
   }
 });
+//defining chart daq.speed, init empty
+let power = new Chart(document.getElementById('power_control.power'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Power',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Fuel Cell Power (W)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Fuel Cell Power (W)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            display: true,
+            text: "Time (Epoch)",
+          },
+        }
+    }
+  }
+});
+//defining chart daq.speed, init empty
+let current = new Chart(document.getElementById('power_control.current'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Current',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Fuel Cell Current (A)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Current (A)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            display: true,
+            text: "Time (Epoch)",
+          },
+        }
+    }
+  }
+});
+//defining chart daq.speed, init empty
+let voltage = new Chart(document.getElementById('power_control.voltage'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Voltage (V)',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Fuel Cell Voltage (V)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Voltage (V)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            display: true,
+            text: "Time (Epoch)",
+          },
+        }
+    }
+  }
+});
 
+//defining chart daq.speed, init empty
+let temp = new Chart(document.getElementById('power_control.temperature'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Temperature (C)',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Fuel Cell Temperature (C)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "Temperature (C)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            display: true,
+            text: "Time (Epoch)",
+          },
+        }
+    }
+  }
+});
 //add data to chart with label(x) and newData(y)
 function addData(chart, label, newData, index=-1) {
     if (index==-1) {
@@ -220,7 +381,7 @@ if (window.location.protocol == "https:") {
       + '/ws/teamview'
   );
 }
-
+let ct = 0;
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     date = new Date()
@@ -241,12 +402,30 @@ chatSocket.onmessage = function(e) {
             //Motor 1 RPM data
             addData(rpm, date.getTime(), data['content'],1)
             break;
+        case 'power_control.temperature':
+          //Motor 1 RPM data
+          addData(temp, date.getTime(), data['content'],0)
+          break;
+        case 'power_control.voltage':
+          //Motor 1 RPM data
+          addData(voltage, date.getTime(), data['content'],0)
+          break;
+        case 'power_control.current':
+          //Motor 1 RPM data
+          addData(current, date.getTime(), data['content'],0)
+          break;
+        case 'power_control.power':
+          //Motor 1 RPM data
+          addData(power, date.getTime(), data['content'],0)
+          break;
         //implement rest of the cases for all dashboard modules
         default:
             break;
-
   }
+  ct++;
+  console.log(ct);
 };
+
 
 chatSocket.onclose = function(e) {
   console.error('Chat socket closed unexpectedly');
