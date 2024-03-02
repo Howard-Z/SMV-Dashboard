@@ -63,6 +63,10 @@ var dateTime = new Date().getTime();
 var startMin = dateTime/60000;
 var startSec = dateTime/1000;
 
+
+
+
+
 //defining chart daq.speed, init empty
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   type: 'line',
@@ -133,6 +137,7 @@ let rpm = new Chart(document.getElementById('rpm'), {
           position: 'top',
         },
         title: {
+          color: "#adadad",
           display: true,
           text: 'RPM of Motors 1 and 2'
         }
@@ -140,6 +145,7 @@ let rpm = new Chart(document.getElementById('rpm'), {
       scales: {
         y: {
           title: {
+            color: "#c2c2c2",
             display: true,
             text: "Time (Min:Sec)",
           },
@@ -147,6 +153,191 @@ let rpm = new Chart(document.getElementById('rpm'), {
     }
   }
 });
+
+
+//defining chart daq.speed, init empty
+let power = new Chart(document.getElementById('power_control.power'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Power',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        color: "#adadad",
+        display: true,
+        text: 'Fuel Cell Power (W)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          color: "#c2c2c2",
+          display: true,
+          text: "Fuel Cell Power (W)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            color: "#c2c2c2",
+            display: true,
+            text: "Time (Min:Sec)",
+          },
+        }
+    }
+  }
+});
+
+//defining chart daq.speed, init empty
+let current = new Chart(document.getElementById('power_control.current'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Current',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        color: "#adadad",
+        display: true,
+        text: 'Fuel Cell Current (A)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          color: "#c2c2c2",
+          display: true,
+          text: "Current (A)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            color: "#c2c2c2",
+            display: true,
+            text: "Time (Min:Sec)",
+          },
+        }
+    }
+  }
+});
+
+//defining chart daq.speed, init empty
+let voltage = new Chart(document.getElementById('power_control.voltage'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Voltage (V)',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        color: "#adadad",
+        display: true,
+        text: 'Fuel Cell Voltage (V)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          color: "#c2c2c2",
+          display: true,
+          text: "Voltage (V)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            color: "#c2c2c2",
+            display: true,
+            text: "Time (Min:Sec)",
+          },
+        }
+    }
+  }
+});
+
+//defining chart daq.speed, init empty
+let temp = new Chart(document.getElementById('power_control.temperature'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fuel Cell Temperature (C)',
+      data: [],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        color: "#adadad",
+        display: true,
+        text: 'Fuel Cell Temperature (C)'
+      }
+   },
+    scales: {
+      y: {
+        title: {
+          color: "#c2c2c2",
+          display: true,
+          text: "Temperature (C)",
+        },
+        beginAtZero: true
+      },
+      x: {
+          title: {
+            color: "#c2c2c2",
+            display: true,
+            text: "Time (Min:Sec)",
+          },
+        }
+    }
+  }
+});
+
+//add data to chart with label(x) and newData(y)
+function addData(chart, label, newData, index=-1) {
+    if (index==-1) {
+      chart.data.labels.push(label);
+      chart.data.datasets.forEach((dataset) => {
+          dataset.data.push(newData);
+      });
+    }
+    else {
+      chart.data.labels.push(label);
+      chart.data.datasets[index].data.push(newData)
+    }
+    chart.update('none');
+}
+//autoscroll with test data and time(min:sec)
 var maxValues = 10;
 setInterval(() => {
   var currentDateTime = new Date().getTime();
@@ -210,178 +401,7 @@ setInterval(() => {
   
 }, 1000);
 
-
-//defining chart daq.speed, init empty
-let power = new Chart(document.getElementById('power_control.power'), {
-  type: 'line',
-  data: {
-    labels: [],
-    datasets: [{
-      label: 'Fuel Cell Power',
-      data: [],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Fuel Cell Power (W)'
-      }
-   },
-    scales: {
-      y: {
-        title: {
-          display: true,
-          text: "Fuel Cell Power (W)",
-        },
-        beginAtZero: true
-      },
-      x: {
-          title: {
-            display: true,
-            text: "Time (Min:Sec)",
-          },
-        }
-    }
-  }
-});
-
-//defining chart daq.speed, init empty
-let current = new Chart(document.getElementById('power_control.current'), {
-  type: 'line',
-  data: {
-    labels: [],
-    datasets: [{
-      label: 'Fuel Cell Current',
-      data: [],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Fuel Cell Current (A)'
-      }
-   },
-    scales: {
-      y: {
-        title: {
-          display: true,
-          text: "Current (A)",
-        },
-        beginAtZero: true
-      },
-      x: {
-          title: {
-            display: true,
-            text: "Time (Min:Sec)",
-          },
-        }
-    }
-  }
-});
-
-//defining chart daq.speed, init empty
-let voltage = new Chart(document.getElementById('power_control.voltage'), {
-  type: 'line',
-  data: {
-    labels: [],
-    datasets: [{
-      label: 'Fuel Cell Voltage (V)',
-      data: [],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Fuel Cell Voltage (V)'
-      }
-   },
-    scales: {
-      y: {
-        title: {
-          display: true,
-          text: "Voltage (V)",
-        },
-        beginAtZero: true
-      },
-      x: {
-          title: {
-            display: true,
-            text: "Time (Min:Sec)",
-          },
-        }
-    }
-  }
-});
-
-//defining chart daq.speed, init empty
-let temp = new Chart(document.getElementById('power_control.temperature'), {
-  type: 'line',
-  data: {
-    labels: [],
-    datasets: [{
-      label: 'Fuel Cell Temperature (C)',
-      data: [],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Fuel Cell Temperature (C)'
-      }
-   },
-    scales: {
-      y: {
-        title: {
-          display: true,
-          text: "Temperature (C)",
-        },
-        beginAtZero: true
-      },
-      x: {
-          title: {
-            display: true,
-            text: "Time (Min:Sec)",
-          },
-        }
-    }
-  }
-});
-
-//add data to chart with label(x) and newData(y)
-function addData(chart, label, newData, index=-1) {
-    if (index==-1) {
-      chart.data.labels.push(label);
-      chart.data.datasets.forEach((dataset) => {
-          dataset.data.push(newData);
-      });
-    }
-    else {
-      chart.data.labels.push(label);
-      chart.data.datasets[index].data.push(newData)
-    }
-    chart.update('none');
-}
-
+Chart.defaults.borderColor = "#8c8b8b";
 //NEW: WebSocket
 let chatSocket = 0;
 if (window.location.protocol == "https:") {
