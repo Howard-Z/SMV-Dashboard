@@ -4,7 +4,7 @@
     left: 0;
     width: 235px;
     height: 100%;
-    background-color: rgb(62, 114, 169);
+    background-color: rgb(34, 85, 140);
     border-style: solid;
     border-color: white;
     border-width: 5px;
@@ -19,7 +19,7 @@
     display: block;
     margin-bottom: 5px;
     font-size: 30px;
-    color: white;
+    color: rgb(0, 0, 0);
     padding-left: 10px;
     padding-top: 10px;
 }
