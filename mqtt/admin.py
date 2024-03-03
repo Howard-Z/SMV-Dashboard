@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import MessageHistory, SpeedData, Location, Trip, CurrentData, VoltageData, PowerData
-from .models import Switch_EncodingData, S_Error_StatusData, RPMData, Motor_StateData, CruiseData, M_Error_StatusData, ThrottleData, BrakeData, Meter_CountData, MQTTError, P_Error_StatusData
+from .models import Switch_EncodingData, S_Error_StatusData, RPMData, Motor_StateData, CruiseData, M_Error_StatusData, ThrottleData, BrakeData, Meter_CountData, MQTTError
 
 #columns
 class MessageHistoryAdmin(admin.ModelAdmin):
@@ -23,7 +23,6 @@ admin.site.register(BrakeData)
 admin.site.register(CurrentData)
 admin.site.register(VoltageData)
 admin.site.register(PowerData)
-admin.site.register(P_Error_StatusData)
 admin.site.register(MessageHistory, MessageHistoryAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Trip)
