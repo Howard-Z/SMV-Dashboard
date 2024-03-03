@@ -49,43 +49,13 @@ class PowerData(models.Model):
     date = models.DateTimeField()
     class Meta:
         verbose_name_plural = "  Power Data" 
-class EnergyData(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  Energy Data" 
+
 class Temperature(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
     data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
     class Meta:
         verbose_name_plural = "  Temperature Data" 
-class T1Data(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  T1 Data" 
-class T2Data(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  T2 Data" 
-
-class T3Data(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  T3 Data" 
-class P_Error_StatusData(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  P Error Status Data" 
 #set: steeringMessage
 class Switch_EncodingData(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
