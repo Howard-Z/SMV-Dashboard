@@ -63,11 +63,16 @@ function timer_s(seconds, minutes, hours)
 //defining chart daq.speed, init empty
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   type: 'line',
+  responsive: true,
+  maintainAspectRatio: false,
   data: {
     labels: [],
     datasets: [{
       label: 'Speed of Car',
       data: [],
+      fill: true,
+      backgroundColor: "lightblue",
+      borderColor: "lightblue",
       borderWidth: 1
     }]
   },
@@ -98,6 +103,63 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
     }
   }
 });
+
+var maxValues = 10;
+var count = 0;
+setInterval(() => {
+  daqSpeed.data.labels.push(++count);
+  daqSpeed.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (daqSpeed.data.labels.length > maxValues) {
+    daqSpeed.data.labels.shift();
+    daqSpeed.data.datasets[0].data.shift();
+  }
+  daqSpeed.update();
+}, 1000);
+
+var chart = new Chart('canvas', {
+  type: "line",
+  responsive: true,
+  maintainAspectRatio: false,
+  data: {
+    labels: [],
+    datasets: [{
+      label: "Data",
+      data: [],
+      fill: true,
+      backgroundColor: "lightblue",
+      borderColor: "lightblue",
+      pointRadius: 0
+    }]
+  },
+  options: {
+    legend: {
+      display: true,
+      position: 'bottom'
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 20,
+          stepSize: 5
+        }
+      }]
+    }
+  }
+});
+
+var maxValues = 10;
+var count = 0;
+setInterval(() => {
+  chart.data.labels.push(++count);
+  chart.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
+  if (chart.data.labels.length > maxValues) {
+    chart.data.labels.shift();
+    chart.data.datasets[0].data.shift();
+  }
+  chart.update();
+}, 1000);
+
 
   //defining chart rpm, init empty
 let rpm = new Chart(document.getElementById('rpm'), {
