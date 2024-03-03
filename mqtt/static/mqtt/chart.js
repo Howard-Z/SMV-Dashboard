@@ -71,7 +71,7 @@ var startSec = dateTime/1000;
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   type: 'line',
   data: {
-    labels: [],
+   
     datasets: [{
       label: 'Speed of Car',
       data: [],
