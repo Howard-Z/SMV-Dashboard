@@ -57,14 +57,21 @@ class TeamConsumer(WebsocketConsumer):
         dt = datetime.now().replace(tzinfo=None) - (Trip.objects.last().start).replace(tzinfo=None)
         seconds = dt.seconds
         hours =  seconds // 3600
+        if hours < 10:
+            hours = f"0{hours}"
         minutes = (seconds % 3600) // 60
-        seconds = seconds % 60
+        if minutes < 10:
+            minutes = f"0{minutes}"
+        seconds = seconds % 60        
+        if seconds < 10:
+            seconds = f"0{seconds}"
         self.send(text_data=json.dumps({
             'type': 'team.notif',
             'module': "timing",
             'hour': f"{hours}",
             'minute': f"{minutes}",
             'second': f"{seconds}",
+            'date': (Trip.objects.last().start).strftime("%d/%m/%Y %H:%M:%S")
             })
         )
         MQTTError.objects.create(module='ws', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
