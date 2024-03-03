@@ -64,7 +64,7 @@ function timer_s(seconds, minutes, hours)
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   type: 'line',
   data: {
-    labels: [],
+   
     datasets: [{
       label: 'Speed of Car',
       data: [],
