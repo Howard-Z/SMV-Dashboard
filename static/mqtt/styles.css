@@ -1,8 +1,8 @@
 :root {
     --black: #000;
-    --lightcolor: #d48961;
-    --color: #c7622a;
-    --darkcolor: #8b441d;
+    --lightcolor: #ffffff;
+    --color: #ffffff;
+    --darkcolor: #ffffff;
 }
 * {
     margin: 0px;

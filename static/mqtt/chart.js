@@ -1,4 +1,7 @@
 var Interval;
+const maxValues = 100; 
+var startTime;
+
 /**************************************
 TIMER FUNCTION: runs timer at top of page
 ***************************************/
@@ -14,16 +17,10 @@ function timer_s(seconds, minutes, hours)
   var appendTens = document.getElementById("tens")
   var appendSeconds = document.getElementById("seconds")
   var appendHours = document.getElementById("hours")
-  
-  if (p1){
-    if (p1 < 9) appendTens.innerHTML = "0" + p1;
-    else appendTens.innerHTML = p1;
-  }
-  if (p2){
-    if (p2 < 9) appendSeconds.innerHTML = "0" + p2;
-    else appendSeconds.innerHTML = p2;
-  }
-  if (p3) appendHours.innerHTML = p3;
+
+  appendTens.innerHTML = p1;
+  appendSeconds.innerHTML = p2;
+  appendHours.innerHTML = p3;
   function startTimer () {
       p1++; 
       if(p1 <= 9){
@@ -60,20 +57,19 @@ function timer_s(seconds, minutes, hours)
   Interval = setInterval(startTimer, 1000);
 }
 
+
+
+
+
 //defining chart daq.speed, init empty
 let daqSpeed = new Chart(document.getElementById('daq.speed'), {
   type: 'line',
-  responsive: true,
-  maintainAspectRatio: false,
   data: {
     labels: [],
     datasets: [{
       label: 'Speed of Car',
       data: [],
-      fill: true,
-      backgroundColor: "lightblue",
-      borderColor: "lightblue",
-      borderWidth: 1
+      borderWidth: 1,
     }]
   },
   options: {
@@ -83,7 +79,8 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
       },
       title: {
         display: true,
-        text: 'Car Speed (mph)'
+        text: 'Car Speed (mph)',
+        color: "black"
       }
    },
     scales: {
@@ -91,75 +88,28 @@ let daqSpeed = new Chart(document.getElementById('daq.speed'), {
         title: {
           display: true,
           text: "Speed (mph)",
+          color: "black"
         },
-        beginAtZero: true
+        beginAtZero: true,
+        grid: {
+          color: "#cedade"
+        }
       },
       x: {
           title: {
             display: true,
-            text: "Time (Epoch)",
+            ticks: {
+              beginAtZero:true,
+              min: 0,
+              max: 100  
+            },
+            text: "Time (HH:MM:SS)",
+            color: "black"
           },
         }
     }
   }
 });
-
-var maxValues = 10;
-var count = 0;
-setInterval(() => {
-  daqSpeed.data.labels.push(++count);
-  daqSpeed.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  if (daqSpeed.data.labels.length > maxValues) {
-    daqSpeed.data.labels.shift();
-    daqSpeed.data.datasets[0].data.shift();
-  }
-  daqSpeed.update();
-}, 1000);
-
-var chart = new Chart('canvas', {
-  type: "line",
-  responsive: true,
-  maintainAspectRatio: false,
-  data: {
-    labels: [],
-    datasets: [{
-      label: "Data",
-      data: [],
-      fill: true,
-      backgroundColor: "lightblue",
-      borderColor: "lightblue",
-      pointRadius: 0
-    }]
-  },
-  options: {
-    legend: {
-      display: true,
-      position: 'bottom'
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          min: 0,
-          max: 20,
-          stepSize: 5
-        }
-      }]
-    }
-  }
-});
-
-var maxValues = 10;
-var count = 0;
-setInterval(() => {
-  chart.data.labels.push(++count);
-  chart.data.datasets[0].data.push(Math.floor((Math.random() * 20) + 1));
-  if (chart.data.labels.length > maxValues) {
-    chart.data.labels.shift();
-    chart.data.datasets[0].data.shift();
-  }
-  chart.update();
-}, 1000);
-
 
   //defining chart rpm, init empty
 let rpm = new Chart(document.getElementById('rpm'), {
@@ -184,6 +134,7 @@ let rpm = new Chart(document.getElementById('rpm'), {
           position: 'top',
         },
         title: {
+          color: "black",
           display: true,
           text: 'RPM of Motors 1 and 2'
         }
@@ -191,13 +142,26 @@ let rpm = new Chart(document.getElementById('rpm'), {
       scales: {
         y: {
           title: {
+            color: "black",
             display: true,
-            text: "Time (Epoch)",
+            text: "RPM",
+          },
+          grid: {
+            color: "#cedade"
+          }
+        },
+        x: {
+          title: {
+            color: "black",
+            display: true,
+            text: "Time (HH:MM:SS)",
           },
         }
     }
   }
 });
+
+
 //defining chart daq.speed, init empty
 let power = new Chart(document.getElementById('power_control.power'), {
   type: 'line',
@@ -215,6 +179,7 @@ let power = new Chart(document.getElementById('power_control.power'), {
         position: 'top',
       },
       title: {
+        color: "black",
         display: true,
         text: 'Fuel Cell Power (W)'
       }
@@ -222,20 +187,26 @@ let power = new Chart(document.getElementById('power_control.power'), {
     scales: {
       y: {
         title: {
+          color: "black",
           display: true,
           text: "Fuel Cell Power (W)",
         },
-        beginAtZero: true
+        beginAtZero: true,
+        grid: {
+          color: "#cedade"
+        }
       },
       x: {
           title: {
+            color: "black",
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (HH:MM:SS)",
           },
         }
     }
   }
 });
+
 //defining chart daq.speed, init empty
 let current = new Chart(document.getElementById('power_control.current'), {
   type: 'line',
@@ -253,6 +224,7 @@ let current = new Chart(document.getElementById('power_control.current'), {
         position: 'top',
       },
       title: {
+        color: "black",
         display: true,
         text: 'Fuel Cell Current (A)'
       }
@@ -260,20 +232,26 @@ let current = new Chart(document.getElementById('power_control.current'), {
     scales: {
       y: {
         title: {
+          color: "black",
           display: true,
           text: "Current (A)",
         },
-        beginAtZero: true
+        beginAtZero: true,
+        grid: {
+          color: "#cedade"
+        }
       },
       x: {
           title: {
+            color: "black",
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (HH:MM:SS)",
           },
         }
     }
   }
 });
+
 //defining chart daq.speed, init empty
 let voltage = new Chart(document.getElementById('power_control.voltage'), {
   type: 'line',
@@ -291,6 +269,7 @@ let voltage = new Chart(document.getElementById('power_control.voltage'), {
         position: 'top',
       },
       title: {
+        color: "black",
         display: true,
         text: 'Fuel Cell Voltage (V)'
       }
@@ -298,15 +277,20 @@ let voltage = new Chart(document.getElementById('power_control.voltage'), {
     scales: {
       y: {
         title: {
+          color: "black",
           display: true,
           text: "Voltage (V)",
         },
-        beginAtZero: true
+        beginAtZero: true,
+        grid: {
+          color: "#cedade"
+        }
       },
       x: {
           title: {
+            color: "black",
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (HH:MM:SS)",
           },
         }
     }
@@ -330,6 +314,7 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
         position: 'top',
       },
       title: {
+        color: "black",
         display: true,
         text: 'Fuel Cell Temperature (C)'
       }
@@ -337,15 +322,20 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
     scales: {
       y: {
         title: {
+          color: "black",
           display: true,
           text: "Temperature (C)",
         },
-        beginAtZero: true
+        beginAtZero: true,
+        grid: {
+          color: "#cedade"
+        }
       },
       x: {
           title: {
+            color: "black",
             display: true,
-            text: "Time (Epoch)",
+            text: "Time (HH:MM:SS)",
           },
         }
     }
@@ -353,6 +343,12 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
 });
 //add data to chart with label(x) and newData(y)
 function addData(chart, label, newData, index=-1) {
+  timeDiffdate = (new Date() - startTime)/1000; //ms to s
+  console.log(timeDiffdate)
+  var tdHr = Math.floor(timeDiffdate/3600);
+  var tdMin = Math.floor((timeDiffdate-tdHr*3600)/60);
+  var tdSec = Math.floor(timeDiffdate-tdHr*3600-tdMin*60);
+  var label = tdHr + ":" + tdMin +":"+ tdSec;
     if (index==-1) {
       chart.data.labels.push(label);
       chart.data.datasets.forEach((dataset) => {
@@ -363,9 +359,17 @@ function addData(chart, label, newData, index=-1) {
       chart.data.labels.push(label);
       chart.data.datasets[index].data.push(newData)
     }
-    chart.update('none');
+    if (chart.data.labels.length > maxValues)
+    {
+      chart.data.labels.shift();
+      for (let i = 0;i<chart.datasets.length;i++){
+        chart.data.datasets[i].data.shift(); //shift all datasets
+      }
+    }
+    chart.update();
 }
 
+Chart.defaults.borderColor = "#8c8b8b";
 //NEW: WebSocket
 let chatSocket = 0;
 if (window.location.protocol == "https:") {
@@ -388,35 +392,38 @@ chatSocket.onmessage = function(e) {
     switch (data['module']) {
         case 'timing':
           //case: initial time from most recent trip
-          timer_s(data['second'], data['minute'], data['hours'])
+          timer_s(data['second'], data['minute'], data['hour'])
+          d = new Date();
+          startTime = Date.parse(`${data['date']}`)
+          console.log(startTime)
           break;
         case 'daq.speed':
             //Speed Data
-            addData(daqSpeed, date.getTime(), data['content'])
+            addData(daqSpeed, data['content'])
             break;
         case 'bear1.rpm':
             //Motor 1 RPM data
-            addData(rpm, date.getTime(), data['content'],0)
+            addData(rpm, data['content'],0)
             break;
         case 'bear2.rpm':
             //Motor 1 RPM data
-            addData(rpm, date.getTime(), data['content'],1)
+            addData(rpm, data['content'],1)
             break;
         case 'power_control.temperature':
           //Motor 1 RPM data
-          addData(temp, date.getTime(), data['content'],0)
+          addData(temp, data['content'],0)
           break;
         case 'power_control.voltage':
           //Motor 1 RPM data
-          addData(voltage, date.getTime(), data['content'],0)
+          addData(voltage, data['content'],0)
           break;
         case 'power_control.current':
           //Motor 1 RPM data
-          addData(current, date.getTime(), data['content'],0)
+          addData(current, data['content'],0)
           break;
         case 'power_control.power':
           //Motor 1 RPM data
-          addData(power, date.getTime(), data['content'],0)
+          addData(power, data['content'],0)
           break;
         //implement rest of the cases for all dashboard modules
         default:
