@@ -337,6 +337,7 @@ function addData(chart, label, newData, index=-1) {
     }
     chart.update('none');
 }
+
 //autoscroll with test data and time(min:sec)
 var maxValues = 10;
 setInterval(() => {
@@ -401,6 +402,22 @@ setInterval(() => {
   
 }, 1000);
 
+document.addEventListener('DOMContentLoaded', () => {
+ //Intialize Map
+ var map = L.map('map', {
+  center: [34.0699, -118.4438], //set to UCLA
+  zoom: 15
+});
+
+//OSM Map tiles
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+var polyline;
+})
+
 Chart.defaults.borderColor = "#8c8b8b";
 //NEW: WebSocket
 let chatSocket = 0;
@@ -417,6 +434,7 @@ if (window.location.protocol == "https:") {
       + '/ws/teamview'
   );
 }
+
 let ct = 0;
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);

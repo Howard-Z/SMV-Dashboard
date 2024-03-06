@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    // var polyline;
+     var polyline;
+     
     // function success1(geolocation) {
     //     latlngs = [geolocation.coords.latitude, geolocation.coords.longitude]
     //     // latlngs = [34.0631, -118.4469]; //This is for testing the line functionality
