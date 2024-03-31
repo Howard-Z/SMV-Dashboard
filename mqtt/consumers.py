@@ -3,8 +3,6 @@ from .models import MQTTError, Trip, Location
 from datetime import datetime
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
-from .helper import send_location
-import pytz
 
 class DashboardConsumer(WebsocketConsumer):
     #GROUP NAME: speed
@@ -17,7 +15,6 @@ class DashboardConsumer(WebsocketConsumer):
         self.groups.append("speed")
         self.accept()
         MQTTError.objects.create(module='ws', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
-
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -34,7 +31,6 @@ class DashboardConsumer(WebsocketConsumer):
         Trip.objects.create(start=date, date_created=date, active=True,name=f"{date} trip (auto)")
 
     def data_notif(self, event):
-        # print(event)
         self.send(text_data=json.dumps({
                 'type': 'data.notif',
                 'module': event['module'],
@@ -71,9 +67,10 @@ class TeamConsumer(WebsocketConsumer):
             'hour': f"{hours}",
             'minute': f"{minutes}",
             'second': f"{seconds}",
-            'date': (Trip.objects.last().start).strftime("%d/%m/%Y %H:%M:%S")
+            'date': (Trip.objects.last().start).strftime("%Y-%m-%dT%H:%M:%S")
             })
         )
+        print("CONNECT")
         MQTTError.objects.create(module='ws', event='connect', message='connected', error=False, time=datetime.now(), trip=Trip.objects.last())
 
     def disconnect(self, close_code):
@@ -87,7 +84,7 @@ class TeamConsumer(WebsocketConsumer):
         print(text_data)
 
     def team_notif(self, event):
-        # print(event)
+        print(event)
         self.send(text_data=json.dumps({
                 'type': 'team.notif',
                 'module': event['module'],

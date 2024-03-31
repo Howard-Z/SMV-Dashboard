@@ -3,15 +3,26 @@
 {% block title %}SMV Dashboard{% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'mqtt/styles.css' %}">
-
+<style>
+  .hide {
+    display: none;
+  }
+</style>
 {% endblock %}
 {% block body %}
-  <div class="container" id="center_gauge" style="width: 40%; height: 50%; left: 29.6%; top: 24.8%; position: absolute;font-size: 100px;text-align: center;vertical-align: middle;">0 mph</div>
-  <div style="width: 17%; height: 50%; left: 7%; top: 24.8%; position: absolute;font-size:30px">
+  <div class="container" id="center_gauge" style="width: 40%; height: 50%; left: 29.6%; top: 24.8%; position:absolute;font-size: 100px;text-align: center;vertical-align: middle;">0 mph</div>
+  <svg id = "blink_left"style="height: 14%; left: 6%; top: 4.8%; position: absolute; color:white;filter: invert(97%) sepia(100%) saturate(12%) hue-rotate(197deg) brightness(105%) contrast(104%);display:none" viewBox="0 0 37 30" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path id="Turn Left" d="M0.585786 13.5858C-0.195262 14.3668 -0.195262 15.6332 0.585786 16.4142L13.3137 29.1421C14.0948 29.9232 15.3611 29.9232 16.1421 29.1421C16.9232 28.3611 16.9232 27.0948 16.1421 26.3137L4.82843 15L16.1421 3.68629C16.9232 2.90524 16.9232 1.63891 16.1421 0.857864C15.3611 0.0768158 14.0948 0.0768158 13.3137 0.857864L0.585786 13.5858ZM37 13H2V17H37V13Z" fill="black"/>
+    </svg>
+<svg id = "blink_right" style="height: 14%; right: 6%; top: 4.8%; position: absolute;color:white;filter: invert(97%) sepia(100%) saturate(12%) hue-rotate(197deg) brightness(105%) contrast(104%);display:none" viewBox="0 0 37 30" fill="currentColor" filter="invert(97%) sepia(100%) saturate(12%) hue-rotate(197deg) brightness(105%) contrast(104%);" xmlns="http://www.w3.org/2000/svg">
+    <path id="Turn Right" d="M36.4142 16.4142C37.1953 15.6332 37.1953 14.3668 36.4142 13.5858L23.6863 0.857864C22.9052 0.0768158 21.6389 0.0768158 20.8579 0.857864C20.0768 1.63891 20.0768 2.90524 20.8579 3.68629L32.1716 15L20.8579 26.3137C20.0768 27.0948 20.0768 28.3611 20.8579 29.1421C21.6389 29.9232 22.9052 29.9232 23.6863 29.1421L36.4142 16.4142ZM0 17H35V13H0L0 17Z" fill="black"/>
+    </svg>
+  <div class = "hide" style="width: 17%; height: 50%; left: 7%; top: 24.8%; position: absolute;font-size:30px">
     <div>Voltage: <span id="voltage_read"></span></div>
     <div>Current: <span id="current_read"></span></div>
     <div>Temperature: <span id="temperature_read"></span></div>
   </div>
+
   <div id="bear2.m_error_status" style="display: none; height: 10%; left: 88.6%; top: 9.6%; position: absolute;"><img src="{% static 'mqtt/motor2_error_symbol.png' %}" height="100%" width="100%"></div>
   <div id="bear1.m_error_status" style="display: none; height: 10%; left: 77%; top: 9.6%; position: absolute;"><img src="{% static 'mqtt/motor1_error_symbol.png' %}" height="100%" width="100%"></div>
   <div id="bear1.throttle" style="display: none; height: 10%; left: 88.6%; top: 27.2%; position: absolute;"><img src="{% static 'mqtt/throttle_error_symbol.png' %}" height="100%" width="100%"></div>

@@ -15,39 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+    var polyline;
 
-    // var polyline;
-    // function success1(geolocation) {
-    //     latlngs = [geolocation.coords.latitude, geolocation.coords.longitude]
-    //     // latlngs = [34.0631, -118.4469]; //This is for testing the line functionality
-    //     polyline = L.polyline([latlngs], {color: 'red'}).addTo(map);
-    //     // zoom the map to the polyline
-    //     map.fitBounds(polyline.getBounds());
-    //     chatSocket.send(JSON.stringify({
-    //         lat: geolocation.coords.latitude,
-    //         long: geolocation.coords.longitude,
-    //       }))
-    // }
-    // function error(error) {
-    //     alert(error.code)
-    //     alert(error.message)
-    // }
-    // //Once websocket initialized, get position and update MQTT
-    // chatSocket.addEventListener("open", () => {
-    //     navigator.geolocation.getCurrentPosition(success1, error, options)
-    //     /*****************
-    //     GEOLOCATION FUNCTION
-    //     ******************/
-    //     function success(geolocation) {
-    //         polyline.addLatLng([geolocation.coords.latitude, geolocation.coords.longitude]);
-    //         map.fitBounds(polyline.getBounds()); //zoom to fit
-    //         chatSocket.send(JSON.stringify({
-    //             lat: geolocation.coords.latitude,
-    //             long: geolocation.coords.longitude,
-    //         }))
-    //     }
-    //     navigator.geolocation.watchPosition(success, error, options)
-    // })
+ 
 /*****************
 WEBSOCKET FUNCTION
 ******************/

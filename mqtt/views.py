@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse, Http404
-from .helper import run, publish, test_senddata, test_mqttStress
+from .helper import run, test_mqttStress
 from .models import Trip
 import threading
 import json
@@ -11,13 +11,13 @@ from django.urls import reverse
 
 # Create your views here.
 
-#THOUGHTS: limit to smvdriver user to prevent accidental location interference
 def index(request):
     return render(request, 'mqtt/dashboard.html')
 
 def map(request):
     #temp map view 
     return render(request, 'mqtt/map.html')
+
 def dash_admin(request):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -28,11 +28,9 @@ def dash_admin(request):
                 if data['data'] is not None:
                     Trip.objects.last().active = False
                     Trip.objects.create(name=data['data'], date_created=datetime.now(), active=True)
-            case "publish_mqtt":
-                data = json.loads(data['data'])
-                publish(topic=data['topic'], message=data['message'])
             case "test_mqtt":
                 test_mqttStress(6600)
+                print("done")
         return JsonResponse({"status": "200"})
     else:
         recent_trip = Trip.objects.last()

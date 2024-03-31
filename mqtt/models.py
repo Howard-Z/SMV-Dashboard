@@ -31,46 +31,49 @@ class Location(models.Model):
 # POWER DATA
 #
 
-class CurrentData(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  Current Data" 
-class VoltageData(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  Voltage Data" 
-class PowerData(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "  Power Data" 
-
 class Temperature(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
     data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
     class Meta:
         verbose_name_plural = "  Temperature Data" 
+class Gyro_x(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Gyro X" 
+class Gyro_y(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Gyro Y" 
+class Gyro_z(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Gyro Z" 
+class Magnetometer(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Magnetometer" 
+class Accel(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = "  Acceleration Data" 
 #set: steeringMessage
-class Switch_EncodingData(models.Model):
+class Blinker(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
     data = models.DecimalField(max_digits=6, decimal_places=3)
     date = models.DateTimeField()
     class Meta:
-        verbose_name_plural = "   Switch Encoding Data" 
-
-
-class S_Error_StatusData(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=6, decimal_places=3)
-    date = models.DateTimeField()
-    class Meta:
-        verbose_name_plural = "   S Error Status Data" 
+        verbose_name_plural = "   Blinkers" 
 
 #set: motorMessage
 class RPMData(models.Model):

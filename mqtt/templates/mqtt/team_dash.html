@@ -24,9 +24,10 @@
   p{
     color: black;
   }
-
+  .hide {
+    display: none;
+  }
 </style>
-
 
   <!--tab content-->
   <div style="position:relative">
@@ -40,9 +41,9 @@
         <div id="nav_bar">
           <a href="#list-item-1" class="rounded-4 list-group-item" style="background-color: #e9f5f9;">Speed</a>
           <a href="#list-item-2" class="list-group-item" style="background-color: #e9f5f9;">RPM</a>
-          <a href="#list-item-3" class="list-group-item" style="background-color: #e9f5f9;">Fuel Cell Voltage</a>
+          <!-- <a href="#list-item-3" class="list-group-item" style="background-color: #e9f5f9;">Fuel Cell Voltage</a>
           <a href="#list-item-4" class="list-group-item" style="background-color: #e9f5f9;">Fuel Cell Current</a>
-          <a href="#list-item-5" class="list-group-item" style="background-color: #e9f5f9;">Fuel Cell Power</a>
+          <a href="#list-item-5" class="list-group-item" style="background-color: #e9f5f9;">Fuel Cell Power</a> -->
           <a href="#list-item-6" class="rounded-4 list-group-item" style="background-color: #e9f5f9;">Fuel Cell Temperature</a>
         </div>
 			</div>
@@ -59,10 +60,14 @@
         <div id= "BearRpm">
            <canvas id="rpm"></canvas>
         </div>
+        <div id= "BearRpm">
+          <canvas id="rpm_again"></canvas>
+       </div>
       <br/>
 			<br/>
-      <h4 id="list-item-3">Fuel Cell Voltage</h4>
-        <div id= "voltage">
+      <div class="hide">
+        <h4 id="list-item-3">Fuel Cell Voltage</h4>
+        <div  id= "voltage">
           <canvas id="power_control.voltage"></canvas>
         </div>
       <br/>
@@ -79,9 +84,11 @@
         </div>
       <br/>
 			<br/>
+      </div>
+
       <h4 id="list-item-6">Fuel Cell Temperature</h4>
         <div id= "temperature">
-          <canvas id="power_control.temperature"></canvas>
+          <canvas id="hsmessage.temperature"></canvas>
         </div>
         </p>
     </div>

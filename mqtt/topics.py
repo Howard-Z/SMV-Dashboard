@@ -65,7 +65,6 @@ topics_list = {
         #error 1, check
 
     },
-
     "/Bear_2/Throttle": {
         "name": "bear2.throttle",
         "model": ThrottleData
@@ -78,44 +77,40 @@ topics_list = {
         "name": "bear2.meter_count",
         "model": Meter_CountData
     },
-    #power_control
-    "/Power_Control/Current": {
-        "name": "power_control.current",
-        "model": CurrentData,
-        "max": 120,
-        "min": 0
-        # >120 A check back
+
+    #UI blinkers
+    "/UIMessage/Blink_Left": {
+        "name": "uimessage.blink_left",
+        "model": Blinker,
     },
-    "/Power_Control/Voltage": {
-        "name": "power_control.voltage",
-        "model": VoltageData,
-        "max": 55,
-        "min": 0
-        # >55 V
+    "/UIMessage/Blink_Right": {
+        "name": "uimessage.blink_right",
+        "model": Blinker,
     },
-    "/Power_Control/Temperature": {
-        "name": "power_control.temperature",
+    #HS Message: for analysis
+    "/HSMessage/Temp": {
+        "name": "hsmessage.temperature",
         "model": Temperature,
-        "max": 55,
-        "min": 0
-        # >55 V
     },
-    "/Power_Control/Power": {
-        "name": "power_control.power",
-        "model": PowerData
+    "/HSMessage/Gyro_x": {
+        "name": "hsmessage.gyro_x",
+        "model": Gyro_x
     },
-    #Steering
-    "/Steering_Wheel/Switch_Encoding": {
-        "name": "steering_wheel.switch_encoding",
-        "model": Switch_EncodingData
-        #ignore
+    "/HSMessage/Gyro_y": {
+        "name": "hsmessage.gyro_y",
+        "model": Gyro_y
     },
-    "/Steering_Wheel/S_Error_Status": {
-        "name": "steering_wheel.s_error_status",
-        "model": S_Error_StatusData,
-        "max": 0,
-        "min": 0
-        #io
+    "/HSMessage/Gyro_z": {
+        "name": "hsmessage.gyro_z",
+        "model": Gyro_z,
+    },
+    "/HSMessage/Magnetometer": {
+        "name": "hsmessage.magnetometer",
+        "model": Magnetometer
+    },
+    "/HSMessage/Accel": {
+        "name": "hsmessage.accel",
+        "model": Accel,
     },
     #DAQMessage
     "/DAQ/Speed": {

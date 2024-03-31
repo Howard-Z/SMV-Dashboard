@@ -342,7 +342,7 @@ let temp = new Chart(document.getElementById('power_control.temperature'), {
   }
 });
 //add data to chart with label(x) and newData(y)
-function addData(chart, label, newData, index=-1) {
+function addData(chart, newData, index=-1) {
   timeDiffdate = (new Date() - startTime)/1000; //ms to s
   console.log(timeDiffdate)
   var tdHr = Math.floor(timeDiffdate/3600);

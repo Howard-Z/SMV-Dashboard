@@ -37,7 +37,7 @@ def connect_mqtt(client_id=client_id) -> mqtt_client:
     client.on_connect = on_connect
     client.connect(broker, port)
     return client
-r_ct = 0
+
 def store(msg):
     channel_layer = get_channel_layer()
     try:
@@ -58,6 +58,7 @@ def store(msg):
                 if not topics[msg.topic]['max'] >= payload and topics[msg.topic]['min'] <= payload:
                     #if payload not in range, error
                     error = True
+            
             MQTTError.objects.create(module='mqtt', event='receive', message=f'{payload}', error=error, time=datetime.now(), trip=Trip.objects.last())
             #update associated model
             topics[msg.topic]['model'].objects.create(date=datetime.now(), data=payload, trip=Trip.objects.last()) 
@@ -66,12 +67,9 @@ def store(msg):
                 pass
             else:
                 #send to team view always, except for lat/long data
-                async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
+                async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"{topics[msg.topic]['name']}", "content": f"1{payload}", "error": error})
                 async_to_sync(channel_layer.group_send)("speed", {"type": f"data.notif", "module": f"{topics[msg.topic]['name']}", "content": payload, "error": error})
-        r_ct += 1
-        # print(f"r_ct: {r_ct}")    
     except Exception as e:
-        r_ct+=1
         #on error, pass. log error in MQTT Error Log
         MQTTError.objects.create(module='mqtt', event='receive', message=f'{e}', error=True, time=datetime.now(), trip=Trip.objects.last())
 
@@ -84,29 +82,26 @@ def subscribe(topic, client: mqtt_client):
 
 def run():
     client = connect_mqtt()
-    if client:
-        for topic in topics:
-            subscribe(topic, client)
-        client.loop_forever()
-    else:
-        run()
+    for topic in topics:
+        subscribe(topic, client)
+    client.loop_forever()
 
-def publish(topic, message):
-    client = connect_mqtt(client_id=f'subscribe-{random.randint(0, 1000)}')
-    client.publish(topic, message)
-def publish(client, topic, message):
-    client.publish(topic, message)
 
-def send_location(lat, long):
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"daq.location", "content": {"lat": lat, "long": long}, "error": False})
+# def publish(client, topic, message):
+#     client.publish(topic, message)
 
-def test_senddata(channel, module, content, type1):
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(channel, {"type": type1, "module": module, "content": content, "error": False})
+# def send_location(lat, long):
+#     channel_layer = get_channel_layer()
+#     async_to_sync(channel_layer.group_send)("teamdata", {"type": f"team.notif", "module": f"daq.location", "content": {"lat": lat, "long": long}, "error": False})
+
+# def test_senddata(channel, module, content, type1):
+#     channel_layer = get_channel_layer()
+#     async_to_sync(channel_layer.group_send)(channel, {"type": type1, "module": module, "content": content, "error": False})
 def test_mqttStress(numPerSec):
     client1 = connect_mqtt()
+    ct = 0
     while ct < numPerSec:
         for key, val in topics.items():
-            publish(client1, key, randint(-5,100))
-            time.sleep(1/6600)
+            client1.publish(key, randint(-5,100))
+            time.sleep(1/numPerSec)
+            ct +=1
